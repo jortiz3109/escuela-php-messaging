@@ -1,0 +1,30 @@
+{
+    "name": "evertec/php-messaging",
+    "description": "Descripción del componente",
+    "type": "library",
+    "require": {
+        "php": "^7.3 | ^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5.19 | ^9.5.8"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "evertec",
+            "email": "team4@evertec.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Messaging\\": "src/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable"
+}
