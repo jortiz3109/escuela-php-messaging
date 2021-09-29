@@ -28,7 +28,7 @@ class Signature
      * 
      * @return string
      */
-    public function sing(string $message): string
+    public function sign(string $message): string
     {
         if (!$this->privateKey){
             throw new MissingPKException('Is necesary the private key');

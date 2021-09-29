@@ -26,7 +26,7 @@ class SignatureTest extends TestCase
     {
         $this->expectException(MissingPKException::class);
         $signer = new Signature($this->publicKey);
-        $signer->sing('Mensaje conenido');
+        $signer->sign('Mensaje conenido');
     }
 
     /**
@@ -37,7 +37,7 @@ class SignatureTest extends TestCase
     public function it_create_digital_signature_correctly()
     {
         $signer = new Signature($this->publicKey, $this->privateKey);
-        $sign   = $signer->sing('Mensaje a firmar');
+        $sign   = $signer->sign('Mensaje a firmar');
         $this->assertNotEmpty($sign);
     }
 
