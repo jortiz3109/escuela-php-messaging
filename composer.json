@@ -21,11 +21,17 @@
             "Messaging\\": "src/"
         }
     },
-
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+              "E4\\Messaging\\Providers\\MessagingServiceProvider"
+            ]
+          }
+    }
 }
