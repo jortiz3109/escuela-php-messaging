@@ -21,16 +21,33 @@ class AMQPConnection
         $this->setConnection();
     }
 
+    /**
+     * Get a AMQPStreamConnection form the current instance
+     * 
+     * @return AMQPStreamConnection
+     */
     public function getConnection(): AMQPStreamConnection
     {
         return $this->connection;
     }
 
+    /**
+     * Get a AMQPChannel form the current instance
+     * 
+     * @return AMQPChannel
+     */
     public function getChannel(): AMQPChannel
     {
         return $this->channel;
     }
 
+    /**
+     * Request a channel close and connection close
+     * 
+     * @return void
+     * 
+     * @throws AMQPConnectionException If the channel connection time out was exceeded
+     */
     public function shutdown(): void
     {
         try {
@@ -41,6 +58,13 @@ class AMQPConnection
         }
     }
 
+    /**
+     * Set connection in the constructor, validate config file and chose ssl o standard connection
+     * 
+     * @return void
+     * 
+     * @throws AMQPConnectionException if connection is failed
+     */
     private function setConnection(): void
     {
         try {
@@ -59,7 +83,12 @@ class AMQPConnection
         }
     }
 
-    private function setStreamConnection()
+    /**
+     * Set a standard stream connection with config file info.
+     * 
+     * @return void
+     */
+    private function setStreamConnection(): void
     {
         $host = $this->getHostConfig();
         $this->connection = new AMQPStreamConnection(
@@ -69,11 +98,14 @@ class AMQPConnection
             Arr::get($host, 'password'),
             Arr::get($host, 'vhost')
         );
-        $this->channel = $this->connection->channel();
-        return $this->connection;
     }
 
-    private function setSSLConnection()
+    /**
+     * Set a SSL connection with config file info.
+     * 
+     * @return void
+     */
+    private function setSSLConnection(): void
     {
         $sslOptions = array_filter(Arr::get($this->config, 'ssl_options', []), function ($item) {
             return null !== $item;
@@ -90,6 +122,11 @@ class AMQPConnection
         );
     }
 
+    /**
+     * Get host info in the config file
+     * 
+     * @return array with host info
+     */
     private function getHostConfig(): array
     {
         return Arr::get($this->config, 'host');

@@ -1,9 +1,9 @@
 {
     "name": "e4/php-messaging",
-    "description": "Descripción del componente",
+    "description": "RabbitMQ Message",
     "type": "library",
     "require": {
-        "php": "^7.3 | ^8.0",
+        "php": ">=7.4",
         "php-amqplib/php-amqplib": "^3.0"
     },
     "require-dev": {
@@ -18,12 +18,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Messaging\\": "src/"
+            "E4\\Messaging\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "E4\\Messaging\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
