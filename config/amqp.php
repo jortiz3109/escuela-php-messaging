@@ -5,15 +5,15 @@ return [
     'ssl' => env('AMQP_SSL', false),
 
     'host' => [
-        'host' => env('AMQP_HOST', 'beaver.rmq.cloudamqp.com'),
+        'host' => env('AMQP_HOST', '127.0.0.1'),
         'port' => env('AMQP_PORT', '5672'),
-        'username' => env('AMQP_USERNAME', 'pzrjdqgp'),
-        'password' => env('AMQP_PASSWORD', 'RExuiTPwf0ZxH68RLQoqBlodnMheoSfi'),
-        'vhost' => env('AMQP_VHOST', 'pzrjdqgp'),
+        'username' => env('AMQP_USERNAME', 'guest'),
+        'password' => env('AMQP_PASSWORD', 'guest'),
+        'vhost' => env('AMQP_VHOST', '/'),
     ],
 
     'exchange' => [
-        'name' => env('AMQP_EXCHANGE_NAME', 'payment_exchange'),
+        'name' => env('AMQP_EXCHANGE_NAME', 'direct_exchange'),
         'type' => env('AMQP_EXCHANGE_TYPE', 'direct')
     ],
 
