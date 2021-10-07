@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "php": ">=7.4",
-        "php-amqplib/php-amqplib": "^3.0"
+        "php-amqplib/php-amqplib": "^3.0",
+        "illuminate/config": "^8.50"
     },
     "require-dev": {
         "orchestra/testbench": "^6.21"
