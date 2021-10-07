@@ -67,17 +67,13 @@ class AMQPConnection extends AMQPConnectionType
     private function setConnection(): void
     {
         try {
-            if (!is_null($this->config)) {
-                if (Arr::get($this->config, 'ssl', true)) {
-                    $this->connection = parent::getSSLConnection();
-                } else {
-                    $this->connection = parent::getStreamConnection();
-                }
-                $this->connection->set_close_on_destruct(true);
-                $this->channel = $this->connection->channel();
+            if (Arr::get($this->config, 'ssl', true)) {
+                $this->connection = parent::getSSLConnection();
             } else {
-                throw new AMQPConnectionException('Error -> Please publish the config file by running php artisan vendor:publish --tag=amqp-config');
+                $this->connection = parent::getStreamConnection();
             }
+            $this->connection->set_close_on_destruct(true);
+            $this->channel = $this->connection->channel();
         } catch (Exception $ex) {
             throw new AMQPConnectionException("Error ->" . $ex->getMessage());
         }
