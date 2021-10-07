@@ -1,6 +1,6 @@
 {
     "name": "e4/php-messaging",
-    "description": "RabbitMQ Message",
+    "description": "Publish and consume messages with RabbitMQ",
     "type": "library",
     "require": {
         "php": ">=7.4",
