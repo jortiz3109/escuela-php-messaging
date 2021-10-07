@@ -3,10 +3,8 @@
 namespace E4\Messaging;
 
 use E4\Messaging\Exceptions\AMQPConnectionException;
-use Exception;
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Connection\AMQPSSLConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 class AMQPConnection extends AMQPConnectionType
@@ -45,16 +43,12 @@ class AMQPConnection extends AMQPConnectionType
      * 
      * @return void
      * 
-     * @throws AMQPConnectionException If the channel connection time out was exceeded
+     * @throws AMQPTimeoutException If the channel connection time out was exceeded
      */
     public function shutdown(): void
     {
-        try {
-            $this->channel->close();
-            $this->connection->close();
-        } catch (Exception $e) {
-            throw new AMQPConnectionException("Error to close connection -> " . $e->getMessage());
-        }
+        $this->channel->close();
+        $this->connection->close();
     }
 
     /**
@@ -66,16 +60,12 @@ class AMQPConnection extends AMQPConnectionType
      */
     private function setConnection(): void
     {
-        try {
-            if (Arr::get($this->config, 'ssl', true)) {
-                $this->connection = parent::getSSLConnection();
-            } else {
-                $this->connection = parent::getStreamConnection();
-            }
-            $this->connection->set_close_on_destruct(true);
-            $this->channel = $this->connection->channel();
-        } catch (Exception $ex) {
-            throw new AMQPConnectionException("Error ->" . $ex->getMessage());
+        if (Arr::get($this->config, 'ssl', true)) {
+            $this->connection = parent::getSSLConnection();
+        } else {
+            $this->connection = parent::getStreamConnection();
         }
+        $this->connection->set_close_on_destruct(true);
+        $this->channel = $this->connection->channel();
     }
 }
