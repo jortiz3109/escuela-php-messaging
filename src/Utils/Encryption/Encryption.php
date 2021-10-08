@@ -33,17 +33,13 @@ class Encryption
     public function encrypt_openssl(string $mesasge): string
     {
         // hash
-        $key = hash($this->algorith, $this->secret_key);
-
+        $key = hash('sha256', $this->secret_key);
         // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash($this->algorith, $this->secret_iv), 0, 16);
+        $iv = substr(hash('sha256', $this->secret_iv), 0, 16);
 
-        $encryptToken = openssl_encrypt($mesasge, $this->encrypt_method, $key, 0, $iv);
-        $encryptToken = base64_encode($encryptToken);
-        // decrypt token
-        $decryptToken = openssl_decrypt(base64_decode($encryptToken), $this->encrypt_method, $key, 0, $iv);
-        // output
-        return $decryptToken;
+        $output = base64_encode(openssl_encrypt($mesasge, $this->encrypt_method, $key, 0, $iv));
+
+        return $output;
     }
 
    /**
@@ -53,18 +49,15 @@ class Encryption
      * 
      * @return string
      */
-    public function decrypt_openssl(string $mesasge): string
+    public function decrypt_openssl(string $message): string
     {
         // hash
-        $key = hash($this->algorith, $this->secret_key);
-
+        $key = hash('sha256', $this->secret_key);
         // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash($this->algorith, $this->secret_iv), 0, 16);
-        // decrypt token
-        $decryptToken = openssl_decrypt(base64_decode($mesasge), $this->encrypt_method, $key, 0, $iv);
-        // convert in array
-        $decryptTokenArray = json_decode($decryptToken, 1);
-        // output
-        return $decryptTokenArray;
+        $iv = substr(hash('sha256', $this->secret_iv), 0, 16);
+        
+        $output = openssl_decrypt(base64_decode($message), $this->encrypt_method, $key, 0, $iv);
+
+        return $output;
     }
 }
