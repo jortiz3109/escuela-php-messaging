@@ -1,10 +1,10 @@
 <?php
 
-namespace Messaging\Utils\Signature\Exceptions;
+namespace E4\Messaging\Utils\Signature\Exceptions;
 
 use Exception;
 
 class MissingPKException extends Exception
 {
-    
+
 }

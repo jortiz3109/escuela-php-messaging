@@ -1,12 +1,14 @@
 {
-    "name": "evertec/php-messaging",
+    "name": "e4/php-messaging",
     "description": "Descripción del componente",
     "type": "library",
     "require": {
-        "php": "^7.3 | ^8.0"
+        "php": "^7.4|^8.0",
+        "php-amqplib/php-amqplib": "3.0.x-dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5.19 | ^9.5.8"
+        "phpunit/phpunit": "^8.5.19|^9.5.8",
+        "mockery/mockery": "1.4.x-dev"
     },
     "license": "MIT",
     "authors": [
@@ -17,7 +19,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Messaging\\": "src/"
+            "E4\\Messaging\\": "src/"
         }
     },
 
@@ -26,5 +28,12 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "stable"
+    "extra": {
+        "laravel": {
+            "providers": [
+                "E4\\MessagingApp\\MessagingServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
 }
