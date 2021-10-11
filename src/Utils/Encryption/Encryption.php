@@ -1,6 +1,6 @@
 <?php
 
-namespace Messaging\Utils\Encryption;
+namespace E4\Messaging\Utils\Encryption;
 
 /**
  * Clase que permite encriptar y desencriptar los mensajes
@@ -10,32 +10,32 @@ namespace Messaging\Utils\Encryption;
 
 class Encryption
 {
-    private $secret_key;
-    private $secret_iv;
-    private $encrypt_method;
+    private $secretKey;
+    private $secretIv;
+    private $encryptMethod;
     private $algorith;
 
     private $key;
     private $iv;
 
-    public function __construct(string $secret_key, string $secret_iv, string $encrypt_method, string $algorith)
+    public function __construct(string $secretKey, string $secretIv, string $encryptMethod, string $algorith)
     {
-        $this->secret_key = $secret_key;
-        $this->secret_iv = $secret_iv;
-        $this->encrypt_method = $encrypt_method;
+        $this->secretKey = $secretKey;
+        $this->secretIv = $secretIv;
+        $this->encryptMethod = $encryptMethod;
         $this->algorith = $algorith;
 
-        $this->configure_keys();
+        $this->configureKeys();
     }
 
     /**
      * Función para configurar las claves del openssl 
      */
-    public function configure_keys(): void
+    public function configureKeys(): void
     {
-        $this->key = hash($this->algorith, $this->secret_key);
-        $length_iv = openssl_cipher_iv_length($this->encrypt_method);
-        $this->iv = substr(hash($this->algorith, $this->secret_iv), 0, $length_iv);
+        $this->key = hash($this->algorith, $this->secretKey);
+        $lengthIv = openssl_cipher_iv_length($this->encryptMethod);
+        $this->iv = substr(hash($this->algorith, $this->secretIv), 0, $lengthIv);
     }
 
     /**
@@ -47,7 +47,7 @@ class Encryption
      */
     public function encrypt(string $message): string
     {
-        $output = base64_encode(openssl_encrypt($message, $this->encrypt_method, $this->key, 0, $this->iv));
+        $output = base64_encode(openssl_encrypt($message, $this->encryptMethod, $this->key, 0, $this->iv));
 
         return $output;
     }
@@ -61,7 +61,7 @@ class Encryption
      */
     public function decrypt(string $message): string
     {
-        $output = openssl_decrypt(base64_decode($message), $this->encrypt_method, $this->key, 0, $this->iv);
+        $output = openssl_decrypt(base64_decode($message), $this->encryptMethod, $this->key, 0, $this->iv);
 
         return $output;
     }
