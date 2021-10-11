@@ -15,29 +15,39 @@ class Encryption
     private $encrypt_method;
     private $algorith;
 
+    private $key;
+    private $iv;
+
     public function __construct(string $secret_key, string $secret_iv, string $encrypt_method, string $algorith)
     {
         $this->secret_key = $secret_key;
         $this->secret_iv = $secret_iv;
         $this->encrypt_method = $encrypt_method;
         $this->algorith = $algorith;
+
+        $this->configure_keys();
+    }
+
+    /**
+     * Función para configurar las claves del openssl 
+     */
+    public function configure_keys(): void
+    {
+        $this->key = hash($this->algorith, $this->secret_key);
+        $length_iv = openssl_cipher_iv_length($this->encrypt_method);
+        $this->iv = substr(hash($this->algorith, $this->secret_iv), 0, $length_iv);
     }
 
     /**
      * Metodo para encriptar
      * 
-     * @param string $mesasge
+     * @param string $message
      * 
      * @return string
      */
-    public function encrypt_openssl(string $mesasge): string
+    public function encrypt(string $message): string
     {
-        // hash
-        $key = hash('sha256', $this->secret_key);
-        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash('sha256', $this->secret_iv), 0, 16);
-
-        $output = base64_encode(openssl_encrypt($mesasge, $this->encrypt_method, $key, 0, $iv));
+        $output = base64_encode(openssl_encrypt($message, $this->encrypt_method, $this->key, 0, $this->iv));
 
         return $output;
     }
@@ -45,18 +55,13 @@ class Encryption
    /**
      * Metodo para desencriptar
      * 
-     * @param string $mesasge
+     * @param string $message
      * 
      * @return string
      */
-    public function decrypt_openssl(string $message): string
+    public function decrypt(string $message): string
     {
-        // hash
-        $key = hash('sha256', $this->secret_key);
-        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash('sha256', $this->secret_iv), 0, 16);
-        
-        $output = openssl_decrypt(base64_decode($message), $this->encrypt_method, $key, 0, $iv);
+        $output = openssl_decrypt(base64_decode($message), $this->encrypt_method, $this->key, 0, $this->iv);
 
         return $output;
     }

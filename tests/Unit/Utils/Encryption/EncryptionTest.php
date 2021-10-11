@@ -13,31 +13,30 @@ class EncryptionTest extends TestCase
     private $encrypt_method = 'AES-256-CBC';
     private $algorith = 'sha256';
 
-    protected $message_encryp = 'Hello World';
-    protected $message_decryp = 'bm13NHBlQXAwb0pxT0d2Q2FKMkFadz09';
+    protected $message = 'Hello World';
 
-    public function testEncryptionValid()
+    public function test_encryption_valid(): void
     {
         $encryption = new Encryption($this->secret_key, $this->secret_iv, $this->encrypt_method, $this->algorith);
-        $message_encrypted = $encryption->encrypt_openssl($this->message_encryp);
+        $message_encrypted = $encryption->encrypt($this->message);
         $this->assertNotEmpty($message_encrypted);
     }
 
-    public function testDecryptionValid()
+    public function test_decryption_valid(): void
     {
         $decryption = new Encryption($this->secret_key, $this->secret_iv, $this->encrypt_method, $this->algorith);
-        $message_decrypted = $decryption->decrypt_openssl($this->message_decryp);
+        $message_decrypted = $decryption->decrypt($this->message);
         $this->assertNotEmpty($message_decrypted);
     }
 
-    public function testCorrectMessage()
+    public function test_correct_message(): void
     {
         $encryption = new Encryption($this->secret_key, $this->secret_iv, $this->encrypt_method, $this->algorith);
-        $message_encrypted = $encryption->encrypt_openssl($this->message_encryp);
+        $message_encrypted = $encryption->encrypt($this->message);
 
         $decryption = new Encryption($this->secret_key, $this->secret_iv, $this->encrypt_method, $this->algorith);
-        $message_decrypted = $decryption->decrypt_openssl($message_encrypted);
+        $message_decrypted = $decryption->decrypt($message_encrypted);
 
-        $this->assertSame($this->message_encryp, $message_decrypted);
+        $this->assertSame($this->message, $message_decrypted);
     }
 }
