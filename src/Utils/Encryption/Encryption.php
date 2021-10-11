@@ -47,9 +47,7 @@ class Encryption
      */
     public function encrypt(string $message): string
     {
-        $output = base64_encode(openssl_encrypt($message, $this->encryptMethod, $this->key, 0, $this->iv));
-
-        return $output;
+        return base64_encode(openssl_encrypt($message, $this->encryptMethod, $this->key, 0, $this->iv));
     }
 
    /**
@@ -61,8 +59,6 @@ class Encryption
      */
     public function decrypt(string $message): string
     {
-        $output = openssl_decrypt(base64_decode($message), $this->encryptMethod, $this->key, 0, $this->iv);
-
-        return $output;
+        return openssl_decrypt(base64_decode($message), $this->encryptMethod, $this->key, 0, $this->iv);
     }
 }
