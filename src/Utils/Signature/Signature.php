@@ -38,7 +38,7 @@ class Signature
             throw new MissingPKException('Is necesary the private key');
         }
         if (!openssl_sign($message, $sign, $this->privateKey, $this->algorithm)) {
-            throw new MissingPKException('The correct private key is required');
+            throw new MissingPKException('The correct algorithm is required');
         }
         return base64_encode($sign);
     }
