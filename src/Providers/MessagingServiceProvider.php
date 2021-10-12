@@ -24,7 +24,7 @@ class MessagingServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../../config/amqp.php' => config_path('amqp.php'),
-        ], 'amqp-config');
+        ], 'amqp');
     }
 
     protected function registerResources(): void

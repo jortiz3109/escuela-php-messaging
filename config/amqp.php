@@ -18,7 +18,7 @@ return [
     ],
 
     'queue' => [
-        'name' => env('AMQP_QUEUE_NAME', 'hello')
+        'name' => env('AMQP_QUEUE_NAME', 'queue')
     ],
 
     'ssl_options' => [
