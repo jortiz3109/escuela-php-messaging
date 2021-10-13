@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging\Utils\Encryption;
+namespace Messaging\Utils\Encryption;
 
 /**
  * Clase que permite encriptar y desencriptar los mensajes
@@ -11,19 +11,18 @@ namespace E4\Messaging\Utils\Encryption;
 class Encryption
 {
     private $secretKey;
-    private $secretIv;
     private $encryptMethod;
-    private $algorith;
+    private $algorithm;
 
     private $key;
     private $iv;
+    private $lengthIv;
 
-    public function __construct(string $secretKey, string $secretIv, string $encryptMethod, string $algorith)
+    public function __construct(string $secretKey, string $encryptMethod, string $algorithm)
     {
         $this->secretKey = $secretKey;
-        $this->secretIv = $secretIv;
         $this->encryptMethod = $encryptMethod;
-        $this->algorith = $algorith;
+        $this->algorithm = $algorithm;
 
         $this->configureKeys();
     }
@@ -33,32 +32,20 @@ class Encryption
      */
     public function configureKeys(): void
     {
-        $this->key = hash($this->algorith, $this->secretKey);
-        $lengthIv = openssl_cipher_iv_length($this->encryptMethod);
-        $this->iv = substr(hash($this->algorith, $this->secretIv), 0, $lengthIv);
+        $this->key = hash($this->algorithm, $this->secretKey);
+        $this->lengthIv = openssl_cipher_iv_length($this->encryptMethod);
+        $this->iv = openssl_random_pseudo_bytes($this->lengthIv);
     }
 
-    /**
-     * Metodo para encriptar
-     * 
-     * @param string $message
-     * 
-     * @return string
-     */
     public function encrypt(string $message): string
     {
-        return base64_encode(openssl_encrypt($message, $this->encryptMethod, $this->key, 0, $this->iv));
+        return base64_encode($this->iv . openssl_encrypt($message, $this->encryptMethod, $this->key, OPENSSL_RAW_DATA, $this->iv));
     }
 
-   /**
-     * Metodo para desencriptar
-     * 
-     * @param string $message
-     * 
-     * @return string
-     */
     public function decrypt(string $message): string
     {
-        return openssl_decrypt(base64_decode($message), $this->encryptMethod, $this->key, 0, $this->iv);
+        $ivDecrypt = substr(base64_decode($message), 0, $this->lengthIv);
+        $messageDecrypt = substr(base64_decode($message), $this->lengthIv);
+        return openssl_decrypt($messageDecrypt, $this->encryptMethod, $this->key, OPENSSL_RAW_DATA, $ivDecrypt);
     }
 }
