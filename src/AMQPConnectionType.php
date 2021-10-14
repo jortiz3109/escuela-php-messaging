@@ -2,9 +2,11 @@
 
 namespace E4\Messaging;
 
+use Exception;
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Connection\AMQPSSLConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use ValueError;
 
 abstract class AMQPConnectionType
 {
@@ -47,6 +49,10 @@ abstract class AMQPConnectionType
 
     private function getHostConfig(): array
     {
-        return Arr::get($this->config, 'host');
+        $host = Arr::get($this->config, 'host');
+        if ($host != null) {
+            return $host;
+        }
+        throw new ValueError('The host is null please validate the config');
     }
 }
