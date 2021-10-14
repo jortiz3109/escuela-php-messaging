@@ -16,11 +16,6 @@ abstract class AMQPConnectionType
         $this->config = $config;
     }
 
-    /**
-     * Get a standard stream connection with config file info.
-     * 
-     * @return AMQPStreamConnection
-     */
     protected function getStreamConnection(): AMQPStreamConnection
     {
         $host = $this->getHostConfig();
@@ -33,11 +28,6 @@ abstract class AMQPConnectionType
         );
     }
 
-    /**
-     * Get a SSL connection with config file info.
-     * 
-     * @return AMQPSSLConnection
-     */
     protected function getSSLConnection(): AMQPSSLConnection
     {
         $sslOptions = array_filter(Arr::get($this->config, 'ssl_options', []), function ($item) {
@@ -55,11 +45,6 @@ abstract class AMQPConnectionType
         );
     }
 
-    /**
-     * Get host info in the config file
-     * 
-     * @return array with host info
-     */
     private function getHostConfig(): array
     {
         return Arr::get($this->config, 'host');

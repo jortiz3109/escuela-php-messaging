@@ -18,31 +18,17 @@ class AMQPConnection extends AMQPConnectionType
         $this->setConnection();
     }
 
-    /**
-     * Get a AMQPStreamConnection form the current instance
-     * 
-     * @return AMQPStreamConnection
-     */
     public function getConnection(): AMQPStreamConnection
     {
         return $this->connection;
     }
 
-    /**
-     * Get a AMQPChannel form the current instance
-     * 
-     * @return AMQPChannel
-     */
     public function getChannel(): AMQPChannel
     {
         return $this->channel;
     }
 
     /**
-     * Request a channel close and connection close
-     * 
-     * @return void
-     * 
      * @throws AMQPTimeoutException If the channel connection time out was exceeded
      */
     public function shutdown(): void
@@ -52,10 +38,6 @@ class AMQPConnection extends AMQPConnectionType
     }
 
     /**
-     * Set connection in the constructor, validate config file and chose ssl o standard connection
-     * 
-     * @return void
-     * 
      * @throws AMQPConnectionException if connection is failed
      */
     private function setConnection(): void
