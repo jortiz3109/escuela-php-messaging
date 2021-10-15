@@ -1,6 +1,6 @@
 <?php
 
-namespace Messaging\Utils\Encryption;
+namespace E4\Messaging\Utils\Encryption;
 
 /**
  * Clase que permite encriptar y desencriptar los mensajes

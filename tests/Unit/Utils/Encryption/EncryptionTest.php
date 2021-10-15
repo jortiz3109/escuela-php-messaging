@@ -3,7 +3,7 @@
 namespace Test\Unit;
 
 use Tests\TestCase;
-use Messaging\Utils\Encryption\Encryption;
+use E4\Messaging\Utils\Encryption\Encryption;
 
 class EncryptionTest extends TestCase
 {
