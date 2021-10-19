@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class MessagingServiceProvider extends ServiceProvider
 {
-
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
@@ -18,7 +17,6 @@ class MessagingServiceProvider extends ServiceProvider
     {
         $this->registerResources();
     }
-
 
     protected function registerPublishing(): void
     {

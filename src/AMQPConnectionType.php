@@ -2,7 +2,6 @@
 
 namespace E4\Messaging;
 
-use Exception;
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Connection\AMQPSSLConnection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -10,7 +9,6 @@ use ValueError;
 
 abstract class AMQPConnectionType
 {
-
     protected array $config;
 
     public function __construct(array $config)

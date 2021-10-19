@@ -14,11 +14,11 @@ return [
 
     'exchange' => [
         'name' => env('AMQP_EXCHANGE_NAME', 'direct_exchange'),
-        'type' => env('AMQP_EXCHANGE_TYPE', 'direct')
+        'type' => env('AMQP_EXCHANGE_TYPE', 'direct'),
     ],
 
     'queue' => [
-        'name' => env('AMQP_QUEUE_NAME', 'queue')
+        'name' => env('AMQP_QUEUE_NAME', 'queue'),
     ],
 
     'ssl_options' => [
