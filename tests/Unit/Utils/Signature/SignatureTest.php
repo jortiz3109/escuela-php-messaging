@@ -3,13 +3,16 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Messaging\Utils\Signature\Signature;
-use Messaging\Utils\Signature\Exceptions\MissingPKException;
+use E4\Messaging\Utils\Signature\Signature;
+use E4\Messaging\Utils\Signature\Exceptions\SignatureException;
+use Exception;
 
 class SignatureTest extends TestCase
 {
-    private $privateKey;
-    private $publicKey;
+    private string $privateKey;
+    private string $publicKey;
+    private int    $algorithm    = OPENSSL_ALGO_SHA256;
+    private string $msgToSign = 'Mensaje a firmar';
 
     public function setUp(): void
     {
@@ -17,53 +20,56 @@ class SignatureTest extends TestCase
         $this->publicKey  = file_get_contents(__DIR__ . '/publicKey.pem');
     }
 
-    /**
-     * Verifica que muestre error al crear una firma sin clave privada
-     *
-     * @test
-     */
-    public function it_shows_error_when_creating_signature_without_private_key()
+    public function test_it_shows_error_when_creating_signature_without_private_key(): void
     {
-        $this->expectException(MissingPKException::class);
-        $signer = new Signature($this->publicKey);
-        $signer->sign('Mensaje conenido');
+        $this->expectException(SignatureException::class);
+        $this->expectExceptionMessage('Is necessary the private key');
+        $signer = new Signature($this->algorithm, $this->publicKey);
+
+        $signer->sign($this->msgToSign);
     }
 
-    /**
-     * Verifica que crea firma digital de forma correcta
-     *
-     * @test
-     */
-    public function it_create_digital_signature_correctly()
+    public function test_it_shows_error_when_creating_signature_with_incorrect_algorithm(): void
     {
-        $signer = new Signature($this->publicKey, $this->privateKey);
-        $sign   = $signer->sign('Mensaje a firmar');
+        $this->expectException(SignatureException::class);
+        $this->expectExceptionMessage('The correct algorithm is required');
+        $signer = new Signature(OPENSSL_ALGO_MD5, $this->publicKey, $this->privateKey);
+
+        $signer->sign($this->msgToSign);
+    }
+
+    public function test_it_create_signature_correctly(): void
+    {
+        $signer = new Signature($this->algorithm, $this->publicKey, $this->privateKey);
+        $sign   = $signer->sign('$this->msgToSign');
+
         $this->assertNotEmpty($sign);
     }
 
-    /**
-     * Verifica que retorna falso cuando la firma es incorrecta
-     *
-     * @test
-     */
-    public function it_return_false_when_the_signature_is_incorrect()
+    public function test_it_return_false_when_the_signature_is_incorrect(): void
     {
-        $signer = new Signature($this->publicKey);
-        $sign   = 'FIRMA_INCORRECTA';
-        $res    = $signer->verify('Mensaje contenido v3', $sign);
+        $signer = new Signature($this->algorithm, $this->publicKey);
+        $sign   = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QI=';
+        $res    = $signer->verify($this->msgToSign, $sign);
+
         $this->assertFalse($res);
     }
 
-    /**
-     * Verifica una firma digital de forma correcta
-     *
-     * @test
-     */
-    public function it_return_true_when_the_signature_is_correct()
+    public function test_it_return_true_when_the_signature_is_correct(): void
     {
-        $signer = new Signature($this->publicKey);
+        $signer = new Signature($this->algorithm, $this->publicKey);
         $sign   = 'MEYCIQC9vTCpwef4JaYcb1ub2Mpk1aUMo4eqEoC1jSa9ixll9gIhAPc2K7W8j3vl3AD73XItdQrdCUf970WkSIKrEAi0Fhvn';
-        $res    = $signer->verify('Mensaje a firmar', $sign);
+        $res    = $signer->verify($this->msgToSign, $sign);
+
         $this->assertTrue($res);
+    }
+
+    public function test_it_shows_error_when_validating_the_signature_with_wrong_algorithm(): void
+    {
+        $this->expectException(SignatureException::class);
+        $signer = new Signature(OPENSSL_ALGO_MD5, $this->publicKey);
+        $sign   = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QI=';
+
+        $signer->verify($this->msgToSign, $sign);
     }
 }
