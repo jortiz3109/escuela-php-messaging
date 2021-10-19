@@ -1,0 +1,34 @@
+name: Continuous integration
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: '8.0'
+      - uses: actions/checkout@v1
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-suggest
+      - name: Run PSALM checks
+        run: composer run-script psalm
+      - name: Check code style
+        run: composer run-script php-cs-fixer-check
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        run: composer run-script testdox
+      - name: Upload coverage
+        run: bash <(curl -s https://codecov.io/bash)
