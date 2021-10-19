@@ -3,7 +3,6 @@
 namespace E4\Messaging;
 
 use E4\Messaging\Utils\MessageStructure;
-use Illuminate\Support\Arr;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -15,7 +14,7 @@ class Publisher
     public function __construct(AMQPChannel $amqpChannel)
     {
         $this->amqpChannel = $amqpChannel;
-        $this->exchange = Arr::get(config('amqp.exchange'), 'name');
+        $this->exchange = config('amqp.exchange.name');
     }
 
     public function publish(string $routingKey, string $id, string $event, array $body, array $properties = []): void

@@ -6,7 +6,6 @@ use JsonSerializable;
 
 class MessageStructure implements JsonSerializable
 {
-
     private string $id;
     private string $event;
     private array $body;
