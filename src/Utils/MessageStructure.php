@@ -22,7 +22,7 @@ class MessageStructure implements JsonSerializable
         return [
             'id' => $this->id,
             'event' => $this->event,
-            'body' => $this->body
+            'body' => $this->body,
         ];
     }
 }
