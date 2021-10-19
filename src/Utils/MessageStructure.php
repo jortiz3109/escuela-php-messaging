@@ -20,9 +20,9 @@ class MessageStructure implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            "id" => $this->id,
-            "event" => $this->event,
-            "body" => $this->body
+            'id' => $this->id,
+            'event' => $this->event,
+            'body' => $this->body
         ];
     }
 }
