@@ -2,4 +2,6 @@
 composer.lock
 .phpunit.result.cache
 .vscode/*
+coverage.xml
 /build
+/coverage
