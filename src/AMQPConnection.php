@@ -2,10 +2,10 @@
 
 namespace E4\Messaging;
 
-use E4\Messaging\Exceptions\AMQPConnectionException;
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Exception\AMQPTimeoutException;
 
 class AMQPConnection extends AMQPConnectionType
 {
@@ -29,7 +29,7 @@ class AMQPConnection extends AMQPConnectionType
     }
 
     /**
-     * @throws AMQPTimeoutException If the channel connection time out was exceeded
+     * @throws AMQPTimeoutException|\Exception
      */
     public function shutdown(): void
     {
@@ -37,9 +37,6 @@ class AMQPConnection extends AMQPConnectionType
         $this->connection->close();
     }
 
-    /**
-     * @throws AMQPConnectionException if connection is failed
-     */
     private function setConnection(): void
     {
         $this->connection = Arr::get($this->config, 'ssl', true) ?

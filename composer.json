@@ -6,10 +6,13 @@
         "php": ">=7.4",
         "php-amqplib/php-amqplib": "^3.0",
         "illuminate/config": "^8.50",
-        "illuminate/support": "^8.63"
+        "illuminate/support": "^8.63",
+      "ext-openssl": "*"
     },
     "require-dev": {
-        "orchestra/testbench": "^6.21"
+        "orchestra/testbench": "^6.21",
+        "friendsofphp/php-cs-fixer": "^3.2",
+        "vimeo/psalm": "^4.10"
     },
     "license": "MIT",
     "authors": [
@@ -35,5 +38,12 @@
               "E4\\Messaging\\Providers\\MessagingServiceProvider"
             ]
           }
+    },
+    "scripts": {
+        "psalm": "vendor/bin/psalm",
+        "test": "vendor/bin/phpunit",
+        "testdox": "XDEBUG_MODE=coverage vendor/bin/phpunit --testdox --coverage-clover coverage.xml",
+        "php-cs-fixer": "vendor/bin/php-cs-fixer fix --using-cache=no",
+        "php-cs-fixer-check": "vendor/bin/php-cs-fixer fix --dry-run --diff"
     }
 }
