@@ -24,6 +24,11 @@ class Consumer
         $this->queue = $queue;
     }
 
+    public function getQueue(): string
+    {
+        return $this->queue;
+    }
+
     public function consume(string $queue, Closure $closure): void
     {
         $this->amqpChannel
