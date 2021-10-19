@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Utils\Signature;
 
 use E4\Messaging\Utils\Signature\Exceptions\SignatureException;
 use E4\Messaging\Utils\Signature\Signature;

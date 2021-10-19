@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Unit;
+namespace Test\Unit\Utils\Encryption;
 
 use E4\Messaging\Utils\Encryption\Encryption;
 use Tests\TestCase;

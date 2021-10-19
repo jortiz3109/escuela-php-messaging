@@ -23,6 +23,15 @@ class ConsumerTest extends TestCase
         $this->assertEquals('queue', $consumer->getQueue());
     }
 
+    public function test_it_can_consume(): void
+    {
+        $consumer = new Consumer($this->prepareAMQPChannel());
+        $consumer->setQueue('queue');
+        $consumer->consume('queue', function () {
+        });
+        $this->assertTrue(true);
+    }
+
     protected function prepareAMQPChannel()
     {
         return $this->getMockBuilder(AMQPChannel::class)
