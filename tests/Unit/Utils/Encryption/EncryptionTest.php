@@ -2,8 +2,8 @@
 
 namespace Test\Unit;
 
-use Tests\TestCase;
 use E4\Messaging\Utils\Encryption\Encryption;
+use Tests\TestCase;
 
 class EncryptionTest extends TestCase
 {

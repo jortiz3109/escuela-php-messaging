@@ -2,21 +2,15 @@
 
 namespace E4\Messaging\Utils\Encryption;
 
-/**
- * Clase que permite encriptar y desencriptar los mensajes
- * Estos se hacen por medio de encrypt_openssl
- * 
- */
-
 class Encryption
 {
-    private $secretKey;
-    private $encryptMethod;
-    private $algorithm;
+    private string $secretKey;
+    private string $encryptMethod;
+    private string $algorithm;
 
-    private $key;
-    private $iv;
-    private $lengthIv;
+    private string $key;
+    private string $iv;
+    private int $lengthIv;
 
     public function __construct(string $secretKey, string $encryptMethod, string $algorithm)
     {
@@ -27,9 +21,6 @@ class Encryption
         $this->configureKeys();
     }
 
-    /**
-     * Función para configurar las claves del openssl 
-     */
     public function configureKeys(): void
     {
         $this->key = hash($this->algorithm, $this->secretKey);
