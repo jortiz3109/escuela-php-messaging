@@ -12,9 +12,7 @@ on:
 
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
@@ -32,10 +30,25 @@ jobs:
         run: composer run-script php-cs-fixer-check
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: composer run-script testdox
-      - name: Analize with sonarcloud
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: coverage
       - name: Upload coverage
         run: bash <(curl -s https://codecov.io/bash)
+
+  sonar-cloud:
+    needs: laravel-tests
+    name: SonarCloud Trigger
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download code coverage results
+        uses: actions/download-artifact@v2
+        with:
+          name: code-coverage-report
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
