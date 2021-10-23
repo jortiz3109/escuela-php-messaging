@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'ssl' => env('AMQP_SSL', false),
 
     'host' => [
@@ -29,4 +28,9 @@ return [
         'passphrase' => env('AMQP_SSL_PASSPHRASE', null),
     ],
 
+    'signature' => [
+        'algorithm' => env('MSAPP_SIGNATURE_ALGORITHM', OPENSSL_ALGO_SHA256),
+        'publicKey' => env('MSAPP_SIGNATURE_PUBLICKEY_PATH'),
+        'privateKey' => env('MSAPP_SIGNATURE_PUBLICKEY_PATH', null),
+    ],
 ];

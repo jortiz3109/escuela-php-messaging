@@ -8,10 +8,6 @@ use Exception;
 
 class MsgSecurity
 {
-    public static array $msgStructure = [
-        'envent' => null,
-        'payload' => []
-    ];
     private Signature $signer;
     private Encryption $encrypter;
 
@@ -27,14 +23,17 @@ class MsgSecurity
         $this->signer = new Signature($signatureAlgorithm, $signaturePublicKey, $signaturePrivateKey);
     }
 
-    public function prepareMsgToPublish(array $msg): string
+    /**
+     * @throws Exception
+     */
+    public function prepareMsgToPublish(MessageStructure $msgStructure): string
     {
-        if (!$this->verifyMsgStructure($msg)) {
-            throw new Exception('The structure of the data is incorrect');
-        }
-        $data = json_encode($msg['payload']);
+        $msg = $msgStructure->jsonSerialize();
+        $this->verifyMsgStructure($msg);
+
+        $data = json_encode($msg['body']);
         $msg['signature'] = $this->signer->sign($data);
-        $msg['payload'] = $this->encrypter->encrypt($data);
+        $msg['body'] = $this->encrypter->encrypt($data);
 
         return json_encode($msg);
     }
@@ -47,8 +46,13 @@ class MsgSecurity
     }
     */
 
-    private function verifyMsgStructure(array $msg): bool
+    /**
+     * @throws Exception
+     */
+    private function verifyMsgStructure(array $msg): void
     {
-        return array_diff_key(self::$msgStructure, $msg) == [];
+        if (empty($msg['event'])) {
+            throw new Exception('The "event" attribute cannot be empty');
+        }
     }
 }

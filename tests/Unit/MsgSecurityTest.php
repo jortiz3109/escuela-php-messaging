@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use E4\Messaging\Utils\MessageStructure;
 use E4\Messaging\Utils\MsgSecurity;
 use Exception;
 use Tests\TestCase;
@@ -12,9 +13,8 @@ class MsgSecurityTest extends TestCase
     private $encryptSecretKey = 'CLASS-MESSAGE-KEY';
     private $encryptMethod = 'AES-256-CBC';
     private $encryptAlgorithm = 'sha256';
-    private array $msgToPublic = [
-        'envent' => 'user::created',
-        'payload' => [
+    private array $msgBody = [
+        'user' => [
             'uuid' => 123,
             'name' => "Esperanza Gomez"
         ]
@@ -23,20 +23,24 @@ class MsgSecurityTest extends TestCase
 
     public function test_it_prepare_a_message_to_publish_correctly(): void
     {
-        $msgEncode = $this->createMsgSecurity()->prepareMsgToPublish($this->msgToPublic);
-        $msgOut = json_decode($msgEncode, true);
+        $msgEncode = $this->createMsgSecurity()->prepareMsgToPublish($this->createMsgStructure('user::created'));
 
-        $this->assertIsNotArray($msgOut['payload']);
+        $msgOut = json_decode($msgEncode, true);
+        $this->assertIsNotArray($msgOut['body']);
         $this->assertArrayHasKey('signature', $msgOut);
     }
 
     public function test_it_shows_error_when_the_structure_to_publish_is_wrong(): void
     {
         $this->expectException(Exception::class);
-        $this->createMsgSecurity()->prepareMsgToPublish([
-            'envent' => 'user::created',
-            'payloadx' => []
-        ]);
+        $msgEncode = $this->createMsgSecurity()->prepareMsgToPublish($this->createMsgStructure(''));
+    }
+
+
+    private function createMsgStructure(string $event, ?array $body = null): MessageStructure
+    {
+        $body = $body ?: $this->msgBody;
+        return new MessageStructure(1, $event, $body);
     }
 
     private function createMsgSecurity(): MsgSecurity
