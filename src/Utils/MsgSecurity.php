@@ -27,7 +27,7 @@ class MsgSecurity
         $this->signer = new Signature($signatureAlgorithm, $signaturePublicKey, $signaturePrivateKey);
     }
 
-    public function prepareMsgToPublic(array $msg): string
+    public function prepareMsgToPublish(array $msg): string
     {
         if (!$this->verifyMsgStructure($msg)) {
             throw new Exception('The structure of the data is incorrect');
