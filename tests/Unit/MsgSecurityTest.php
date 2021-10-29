@@ -19,7 +19,7 @@ class MsgSecurityTest extends TestCase
             'name' => "Esperanza Gomez"
         ]
     ];
-    private ?MsgSecurity $msgSecurity;
+    private ?MsgSecurity $msgSecurity = null;
 
     public function test_it_prepare_a_message_to_publish_correctly(): void
     {
@@ -30,13 +30,6 @@ class MsgSecurityTest extends TestCase
         $this->assertArrayHasKey('signature', $msgOut);
     }
 
-    public function test_it_shows_error_when_the_structure_to_publish_is_wrong(): void
-    {
-        $this->expectException(Exception::class);
-        $msgEncode = $this->createMsgSecurity()->prepareMsgToPublish($this->createMsgStructure(''));
-    }
-
-
     private function createMsgStructure(string $event, ?array $body = null): MessageStructure
     {
         $body = $body ?: $this->msgBody;
@@ -45,16 +38,16 @@ class MsgSecurityTest extends TestCase
 
     private function createMsgSecurity(): MsgSecurity
     {
-        if (!isset($this->msgSecurity)) {
-            $this->msgSecurity = new MsgSecurity(
-                $this->encryptSecretKey,
-                $this->encryptMethod,
-                $this->encryptAlgorithm,
-                $this->signerAlgorithm,
-                file_get_contents(__DIR__ . '/Utils/Signature/publicKey.pem'),
-                file_get_contents(__DIR__ . '/Utils/Signature/privateKey.pem')
-            );
+        if ($this->msgSecurity) {
+            return $this->msgSecurity;
         }
-        return $this->msgSecurity;
+        return $this->msgSecurity = new MsgSecurity(
+            $this->encryptSecretKey,
+            $this->encryptMethod,
+            $this->encryptAlgorithm,
+            $this->signerAlgorithm,
+            file_get_contents(__DIR__ . '/Utils/Signature/publicKey.pem'),
+            file_get_contents(__DIR__ . '/Utils/Signature/privateKey.pem')
+        );
     }
 }
