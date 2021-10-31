@@ -17,9 +17,8 @@ class Publisher
         $this->exchange = config('amqp.exchange.name');
     }
 
-    public function publish(string $routingKey, string $id, string $event, array $body, array $properties = []): void
+    public function publish(string $routingKey, string $message, array $properties = []): void
     {
-        $message = json_encode(new MessageStructure($id, $event, $body));
         $this->amqpChannel->basic_publish($this->message($message, $properties), $this->exchange, $routingKey);
     }
 

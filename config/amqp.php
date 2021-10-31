@@ -33,4 +33,10 @@ return [
         'publicKey' => env('MSAPP_SIGNATURE_PUBLICKEY_PATH'),
         'privateKey' => env('MSAPP_SIGNATURE_PUBLICKEY_PATH', null),
     ],
+
+    'encrypt' => [
+        'secretKey' => env('MSAPP_ENCRYPT_SECRETKEY', 'CLASS-MESSAGE-KEY'),
+        'method' => env('MSAPP_ENCRYPT_METHOD', 'AES-256-CBC'),
+        'algorithm' => env('MSAPP_ENCRYPT_ALGORITHM', 'sha256'),
+    ],
 ];
