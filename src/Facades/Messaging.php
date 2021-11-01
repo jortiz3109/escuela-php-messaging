@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class Messaging extends Facade
 {
+
     protected static function getFacadeAccessor(): string
     {
         return MessageBroker::class;

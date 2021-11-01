@@ -2,6 +2,7 @@
 
 namespace E4\Messaging\Providers;
 
+use E4\Messaging\Console\Commands\ListeningMessage;
 use Illuminate\Support\ServiceProvider;
 
 class MessagingServiceProvider extends ServiceProvider
@@ -16,6 +17,9 @@ class MessagingServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerResources();
+        $this->commands([
+            ListeningMessage::class
+        ]);
     }
 
     protected function registerPublishing(): void

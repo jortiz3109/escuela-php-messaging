@@ -23,6 +23,9 @@ class MsgSecurity
         $this->signature = new Signature($signatureAlgorithm, $signaturePublicKey, $signaturePrivateKey);
     }
 
+    /**
+     * @throws Signature\Exceptions\SignatureException
+     */
     public function prepareMsgToPublish(MessageStructure $msgStructure): string
     {
         $msg = $msgStructure->jsonSerialize();
@@ -33,6 +36,16 @@ class MsgSecurity
         return json_encode($msg);
     }
 
+    /**
+     * @throws Signature\Exceptions\SignatureException
+     * @throws SignatureVerifyException
+     */
+    /**
+     * @param string $message
+     * @return MessageStructure
+     * @throws SignatureVerifyException
+     * @throws Signature\Exceptions\SignatureException
+     */
     public function prepareMsgToReceive(string $message): MessageStructure
     {
         $jsonMessage = json_decode($message);
