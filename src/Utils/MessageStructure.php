@@ -6,11 +6,11 @@ use JsonSerializable;
 
 class MessageStructure implements JsonSerializable
 {
-    private string $id;
-    private string $event;
-    private array $body;
+    public string $id;
+    public string $event;
+    public array $body;
 
-    public function __construct(string $event, array $body, string $id = null)
+    public function __construct(string $event, array $body, string $id = '')
     {
         $this->id = $id;
         $this->event = $event;

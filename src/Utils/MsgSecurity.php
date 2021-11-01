@@ -2,6 +2,7 @@
 
 namespace E4\Messaging\Utils;
 
+use E4\Messaging\Exceptions\SignatureVerifyException;
 use E4\Messaging\Utils\Encryption\Encryption;
 use E4\Messaging\Utils\Signature\Signature;
 
@@ -22,25 +23,26 @@ class MsgSecurity
         $this->signature = new Signature($signatureAlgorithm, $signaturePublicKey, $signaturePrivateKey);
     }
 
-    /**
-     * @throws Exception
-     */
     public function prepareMsgToPublish(MessageStructure $msgStructure): string
     {
         $msg = $msgStructure->jsonSerialize();
-
         $data = json_encode($msg['body']);
-        $msg['signature'] = $this->signature->sign($data);
         $msg['body'] = $this->encryption->encrypt($data);
+        $msg['signature'] = $this->signature->sign($msg['body']);
 
         return json_encode($msg);
     }
 
-    /* TODO
-    public function prepareMsgToRecive(string $msg): MessageStructure
+    public function prepareMsgToReceive(string $message): MessageStructure
     {
-        //Desencriptar
-        //VerificarFirma
+        $jsonMessage = json_decode($message);
+        if ($this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
+            return new MessageStructure(
+                $jsonMessage->event,
+                json_decode($this->encryption->decrypt($jsonMessage->body), true),
+                $jsonMessage->id
+            );
+        }
+        throw new SignatureVerifyException('Error in message signature');
     }
-    */
 }

@@ -48,7 +48,8 @@ class Signature
     {
         $verified = openssl_verify($message, base64_decode($signatureInBase64), $this->publicKey, $this->algorithm);
         if ($verified == -1) {
-            throw new SignatureException('The signature format or the signature algorithm is wrong');
+            // throw new SignatureException('The signature format or the signature algorithm is wrong'); TODA Validar con Cristian
+            return false;
         }
         return $verified == 1;
     }
