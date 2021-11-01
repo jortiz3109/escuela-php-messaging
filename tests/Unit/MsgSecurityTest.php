@@ -45,9 +45,9 @@ class MsgSecurityTest extends TestCase
     public function test_throw_signature_verify(): void
     {
         $this->expectException(SignatureVerifyException::class);
-        $this->privateKey = __DIR__ . '/Utils/Signature/privateBadKey.pem';
-        $messageEncode = $this->createEncodeMessage('message::bad_sig', $this->msgBody);
-        $this->createMsgSecurity()->prepareMsgToReceive($messageEncode);
+        $messageEncode = json_decode($this->createEncodeMessage('message::bad_sig', $this->msgBody));
+        $messageEncode->signature = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QI=';
+        $this->createMsgSecurity()->prepareMsgToReceive(json_encode($messageEncode));
     }
 
     private function createEncodeMessage(string $event, ?array $body = null): string

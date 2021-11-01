@@ -2,6 +2,7 @@
 
 namespace E4\Messaging\Utils\Signature;
 
+use E4\Messaging\Exceptions\SignatureVerifyException;
 use E4\Messaging\Utils\Signature\Exceptions\SignatureException;
 use Exception;
 
@@ -48,8 +49,7 @@ class Signature
     {
         $verified = openssl_verify($message, base64_decode($signatureInBase64), $this->publicKey, $this->algorithm);
         if ($verified == -1) {
-            // throw new SignatureException('The signature format or the signature algorithm is wrong'); TODA Validar con Cristian
-            return false;
+            throw new SignatureVerifyException('The signature format or the signature algorithm is wrong');
         }
         return $verified == 1;
     }

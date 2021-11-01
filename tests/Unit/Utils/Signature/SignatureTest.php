@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Utils\Signature;
 
+use E4\Messaging\Exceptions\SignatureVerifyException;
 use E4\Messaging\Utils\Signature\Exceptions\SignatureException;
 use E4\Messaging\Utils\Signature\Signature;
 use Tests\TestCase;
@@ -65,7 +66,7 @@ class SignatureTest extends TestCase
 
     public function test_it_shows_error_when_validating_the_signature_with_wrong_algorithm(): void
     {
-        $this->expectException(SignatureException::class);
+        $this->expectException(SignatureVerifyException::class);
         $signer = new Signature(OPENSSL_ALGO_MD5, $this->publicKey);
         $sign = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QI=';
 

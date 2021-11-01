@@ -43,6 +43,6 @@ class MsgSecurity
                 $jsonMessage->id
             );
         }
-        throw new SignatureVerifyException('Error in message signature');
+        throw new SignatureVerifyException('Error in message wrong signature');
     }
 }
