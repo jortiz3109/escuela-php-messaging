@@ -3,6 +3,7 @@
 namespace E4\Messaging;
 
 use Closure;
+use E4\Messaging\Utils\MsgSecurity;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -29,7 +30,7 @@ class Consumer
         return $this->queue;
     }
 
-    public function consume(string $queue, Closure $closure): void
+    public function consume(Closure $closure): void
     {
         $this->amqpChannel
             ->basic_consume(

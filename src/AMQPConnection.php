@@ -2,6 +2,7 @@
 
 namespace E4\Messaging;
 
+use E4\Messaging\Utils\MsgSecurity;
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
