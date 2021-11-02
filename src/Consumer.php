@@ -3,7 +3,6 @@
 namespace E4\Messaging;
 
 use Closure;
-use E4\Messaging\Utils\MsgSecurity;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -14,10 +13,10 @@ class Consumer
     private AMQPChannel $amqpChannel;
     private string $queue;
 
-    public function __construct(AMQPChannel $amqpChannel)
+    public function __construct(string $queue, AMQPChannel $amqpChannel)
     {
         $this->amqpChannel = $amqpChannel;
-        $this->queue = config('amqp.queue.name');
+        $this->queue = $queue;
     }
 
     public function setQueue(string $queue)

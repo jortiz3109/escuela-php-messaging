@@ -13,8 +13,8 @@ class MsgSecurityTest extends TestCase
     private $encryptSecretKey = 'CLASS-MESSAGE-KEY';
     private $encryptMethod = 'AES-256-CBC';
     private $encryptAlgorithm = 'sha256';
-    private $publicKey = __DIR__ . '/Utils/Signature/publicKey.pem';
-    private $privateKey = __DIR__ . '/Utils/Signature/privateKey.pem';
+    private $publicKey = __DIR__ . '/../certs/signaturePublicKey.pem';
+    private $privateKey = __DIR__ . '/../certs/signaturePrivateKey.pem';
     private array $msgBody = [
         'user' => [
             'uuid' => 123,
