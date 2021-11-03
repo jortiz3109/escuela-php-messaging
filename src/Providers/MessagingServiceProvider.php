@@ -18,7 +18,7 @@ class MessagingServiceProvider extends ServiceProvider
     {
         $this->registerResources();
 
-        $this->app->singleton(MessagingApp::class, function ($app) {
+        $this->app->singleton(MessageBroker::class, function ($app) {
 
             $config = $app->make('config')->get('messagingapp');
             $defaultConfig = $config['connections'][$config['default']];
