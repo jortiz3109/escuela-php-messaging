@@ -19,11 +19,13 @@ class MessagingServiceProvider extends ServiceProvider
         $this->registerResources();
 
         $this->app->singleton(MessagingApp::class, function ($app) {
-            
+
             $config = $app->make('config')->get('messagingapp');
             $defaultConfig = $config['connections'][$config['default']];
-            $defaultConfig['signature'] = file_get_contents($config['signature']);
-            $defaultConfig['encryption'] = file_get_contents($config['encryption']);
+            $defaultConfig['signature'] = $config['signature'];
+            $defaultConfig['signature']['publicKey'] = file_get_contents($config['signature']['publicKey']);
+            $defaultConfig['signature']['privateKey'] = file_get_contents($config['signature']['privateKey']);
+            $defaultConfig['encryption'] = $config['encryption'];
 
             return new MessageBroker($defaultConfig);
         });

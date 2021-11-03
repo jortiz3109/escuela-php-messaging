@@ -63,16 +63,16 @@ class MsgSecurityTest extends TestCase
 
     private function createMsgSecurity(): MsgSecurity
     {
-        if ($this->msgSecurity) {
-            return $this->msgSecurity;
+        if (!$this->msgSecurity) {
+            $this->msgSecurity = new MsgSecurity(
+                $this->encryptSecretKey,
+                $this->encryptMethod,
+                $this->encryptAlgorithm,
+                $this->signerAlgorithm,
+                file_get_contents($this->publicKey),
+                file_get_contents($this->privateKey)
+            );
         }
-        return $this->msgSecurity = new MsgSecurity(
-            $this->encryptSecretKey,
-            $this->encryptMethod,
-            $this->encryptAlgorithm,
-            $this->signerAlgorithm,
-            file_get_contents($this->publicKey),
-            file_get_contents($this->privateKey)
-        );
+        return $this->msgSecurity;
     }
 }
