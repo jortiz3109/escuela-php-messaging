@@ -11,10 +11,10 @@ class Publisher
     private AMQPChannel $amqpChannel;
     private string $exchange;
 
-    public function __construct(AMQPChannel $amqpChannel)
+    public function __construct(string $exchange, AMQPChannel $amqpChannel)
     {
         $this->amqpChannel = $amqpChannel;
-        $this->exchange = config('amqp.exchange.name');
+        $this->exchange = $exchange;
     }
 
     public function publish(string $routingKey, string $message, array $properties = []): void

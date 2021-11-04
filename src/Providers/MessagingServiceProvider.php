@@ -3,6 +3,7 @@
 namespace E4\Messaging\Providers;
 
 use E4\Messaging\Console\Commands\ListeningMessage;
+use E4\Messaging\MessageBroker;
 use Illuminate\Support\ServiceProvider;
 
 class MessagingServiceProvider extends ServiceProvider
@@ -20,17 +21,29 @@ class MessagingServiceProvider extends ServiceProvider
         $this->commands([
             ListeningMessage::class
         ]);
+
+        $this->app->singleton(MessageBroker::class, function ($app) {
+
+            $config = $app->make('config')->get('messagingapp');
+            $defaultConfig = $config['connections'][$config['default']];
+            $defaultConfig['signature'] = $config['signature'];
+            $defaultConfig['signature']['publicKey'] = file_get_contents($config['signature']['publicKey']);
+            $defaultConfig['signature']['privateKey'] = file_get_contents($config['signature']['privateKey']);
+            $defaultConfig['encryption'] = $config['encryption'];
+
+            return new MessageBroker($defaultConfig);
+        });
     }
 
     protected function registerPublishing(): void
     {
         $this->publishes([
-            __DIR__ . '/../../config/amqp.php' => config_path('amqp.php'),
-        ], 'amqp');
+            __DIR__ . '/../../config/messagingapp.php' => config_path('messagingapp.php'),
+        ], 'messagingapp');
     }
 
     protected function registerResources(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/amqp.php', 'amqp');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/messagingapp.php', 'messagingapp');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace E4\Messaging\Utils\Signature;
 
+use E4\Messaging\Exceptions\SignatureSignException;
 use E4\Messaging\Exceptions\SignatureVerifyException;
-use E4\Messaging\Utils\Signature\Exceptions\SignatureException;
 use Exception;
 
 class Signature
@@ -23,16 +23,16 @@ class Signature
      * @param string $message
      *
      * @return string
-     * @throws SignatureException
+     * @throws SignatureSignException
      * @throws Exception
      */
     public function sign(string $message): string
     {
         if (!$this->privateKey) {
-            throw new SignatureException('Is necessary the private key');
+            throw new SignatureSignException('Is necessary the private key');
         }
         if (!openssl_sign($message, $signature, $this->privateKey, $this->algorithm)) {
-            throw new SignatureException('The correct algorithm is required');
+            throw new SignatureSignException('The correct algorithm is required');
         }
         return base64_encode($signature);
     }
