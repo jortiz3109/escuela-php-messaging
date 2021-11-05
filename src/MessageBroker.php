@@ -10,6 +10,7 @@ use E4\Messaging\Publisher;
 use E4\Messaging\Utils\Helpers;
 use E4\Messaging\Utils\MessageStructure;
 use E4\Messaging\Utils\MsgSecurity;
+use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class MessageBroker
@@ -20,10 +21,9 @@ class MessageBroker
     private Consumer $consumer;
     private array $config;
 
-    public function __construct(array $config)
+    public function __construct(array $config = null)
     {
-        $this->config = $config;
-
+        $this->config = $config ?? $this->configInit();
         $this->messageSecurity = new MsgSecurity(
             $this->config['encryption']['secretKey'],
             $this->config['encryption']['method'],
@@ -35,6 +35,18 @@ class MessageBroker
         $this->amqpConnection = $this->createConnection();
         $this->publisher = new Publisher($this->config['exchange']['name'], $this->amqpConnection->getChannel());
         $this->consumer = new Consumer($this->config['queue']['name'], $this->amqpConnection->getChannel());
+    }
+
+    private function configInit(): array
+    {
+        $config = config('messagingapp');
+        $defaultConfig = $config['connections'][$config['default']];
+        $defaultConfig['signature'] = $config['signature'];
+        $defaultConfig['signature']['publicKey'] = file_get_contents($config['signature']['publicKey']);
+        $defaultConfig['signature']['privateKey'] = file_get_contents($config['signature']['privateKey']);
+        $defaultConfig['encryption'] = $config['encryption'];
+        $defaultConfig['events'] = $config['events'];
+        return $defaultConfig;
     }
 
     protected function createConnection(): AMQPConnection
@@ -72,9 +84,9 @@ class MessageBroker
 
     public function consume(Closure $closure): void
     {
-        $closureOut = function (AMQPMessage $msg) use ($closure) {
-            $messageStructure = $this->messageSecurity->prepareMsgToReceive($msg->body);
-            $msg = new AMQPMessageStructure($msg, $messageStructure);
+        $closureOut = function (AMQPMessage $amqpMessage) use ($closure) {
+            $messageStructure = $this->messageSecurity->prepareMsgToReceive($amqpMessage->body);
+            $msg = new AMQPMessageStructure($amqpMessage, $messageStructure);
             $closure($msg);
         };
         $this->consumer->consume($closureOut);
