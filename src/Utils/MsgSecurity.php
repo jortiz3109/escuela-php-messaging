@@ -5,6 +5,8 @@ namespace E4\Messaging\Utils;
 use E4\Messaging\Exceptions\SignatureVerifyException;
 use E4\Messaging\Utils\Encryption\Encryption;
 use E4\Messaging\Utils\Signature\Signature;
+use http\Message\Body;
+use PHPUnit\Exception;
 
 class MsgSecurity
 {
@@ -45,17 +47,30 @@ class MsgSecurity
      * @return MessageStructure
      * @throws SignatureVerifyException
      * @throws Signature\Exceptions\SignatureException
+     * @throws \Exception
      */
     public function prepareMsgToReceive(string $message): MessageStructure
     {
         $jsonMessage = json_decode($message);
-        if ($this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
-            return new MessageStructure(
-                $jsonMessage->event,
-                json_decode($this->encryption->decrypt($jsonMessage->body), true),
-                $jsonMessage->id
-            );
+        if(isset($jsonMessage->body) && isset($jsonMessage->signature)){
+            try {
+                if ($this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
+                    $bodyDecrypt = json_decode($this->encryption->decrypt($jsonMessage->body), true);
+                    if($bodyDecrypt){
+                        return new MessageStructure(
+                            $jsonMessage->event,
+                            $bodyDecrypt,
+                            $jsonMessage->id
+                        );
+                    } else {
+                        throw new \Exception('Its not possible to decrypt the message');
+                    }
+                }
+            } catch (Exception $exception){
+                throw new SignatureVerifyException('Error in message wrong signature');
+            }
+        } else {
+            throw new \Exception('Does not have a well-defined message structure');
         }
-        throw new SignatureVerifyException('Error in message wrong signature');
     }
 }
