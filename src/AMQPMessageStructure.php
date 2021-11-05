@@ -11,8 +11,7 @@ class AMQPMessageStructure extends MessageStructure
 
     public function __construct(AMQPMessage $AMQPMessage, MessageStructure $messageStructure)
     {
-        $this->event = $messageStructure->event;
-        $this->body = $messageStructure->body;
+        parent::__construct($messageStructure->event, $messageStructure->body, $messageStructure->id);
         $this->AMQPMessage = $AMQPMessage;
     }
 
@@ -24,5 +23,10 @@ class AMQPMessageStructure extends MessageStructure
     public function ack(): void
     {
         $this->AMQPMessage->ack();
+    }
+
+    public function getRoutingKey(): string
+    {
+        return $this->AMQPMessage->getRoutingKey();
     }
 }
