@@ -39,13 +39,13 @@ class MessageBroker
 
     private function configInit(): array
     {
-        $config = config('messagingapp');
-        $defaultConfig = $config['connections'][$config['default']];
-        $defaultConfig['signature'] = $config['signature'];
-        $defaultConfig['signature']['publicKey'] = file_get_contents($config['signature']['publicKey']);
-        $defaultConfig['signature']['privateKey'] = file_get_contents($config['signature']['privateKey']);
-        $defaultConfig['encryption'] = $config['encryption'];
-        $defaultConfig['events'] = $config['events'];
+        $settings = config('messagingapp');
+        $defaultConfig = $settings['connections'][$settings['default']];
+        $defaultConfig['signature'] = $settings['signature'];
+        $defaultConfig['signature']['publicKey'] = file_get_contents($settings['signature']['publicKey']);
+        $defaultConfig['signature']['privateKey'] = file_get_contents($settings['signature']['privateKey']);
+        $defaultConfig['encryption'] = $settings['encryption'];
+        $defaultConfig['events'] = $settings['events'];
         return $defaultConfig;
     }
 
