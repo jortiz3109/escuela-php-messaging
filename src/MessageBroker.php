@@ -3,14 +3,10 @@
 namespace E4\Messaging;
 
 use Closure;
-use E4\Messaging\AMQPConnection;
-use E4\Messaging\AMQPMessageStructure;
 use E4\Messaging\Exceptions\MessageBrokerConfigException;
-use E4\Messaging\Publisher;
 use E4\Messaging\Utils\Helpers;
 use E4\Messaging\Utils\MessageStructure;
 use E4\Messaging\Utils\MsgSecurity;
-use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class MessageBroker
@@ -84,16 +80,12 @@ class MessageBroker
 
     public function consume(Closure $closure): void
     {
-        $closureOut = function (AMQPMessage $amqpMessage) use ($closure) {
-            $messageStructure = $this->messageSecurity->prepareMsgToReceive($amqpMessage->body);
-//            $msg = new AMQPMessageStructure($amqpMessage, $messageStructure);
-            $closure($amqpMessage);
-        };
-        $this->consumer->consume($closureOut);
+        $this->consumer->consume($closure);
     }
 
-    public function changeQueue(string $queue){
-        $this->consumer->queue($queue);
+    public function setQueue(string $queue): MessageBroker
+    {
+        $this->consumer->setQueue($queue);
         return $this;
     }
 }
