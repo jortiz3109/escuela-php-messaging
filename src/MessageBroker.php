@@ -86,9 +86,14 @@ class MessageBroker
     {
         $closureOut = function (AMQPMessage $amqpMessage) use ($closure) {
             $messageStructure = $this->messageSecurity->prepareMsgToReceive($amqpMessage->body);
-            $msg = new AMQPMessageStructure($amqpMessage, $messageStructure);
-            $closure($msg);
+//            $msg = new AMQPMessageStructure($amqpMessage, $messageStructure);
+            $closure($amqpMessage);
         };
         $this->consumer->consume($closureOut);
+    }
+
+    public function changeQueue(string $queue){
+        $this->consumer->queue($queue);
+        return $this;
     }
 }
