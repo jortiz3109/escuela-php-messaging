@@ -21,18 +21,6 @@ class MessagingServiceProvider extends ServiceProvider
         $this->commands([
             ListeningMessage::class
         ]);
-
-        $this->app->singleton(MessageBroker::class, function ($app) {
-
-            $config = $app->make('config')->get('messagingapp');
-            $defaultConfig = $config['connections'][$config['default']];
-            $defaultConfig['signature'] = $config['signature'];
-            $defaultConfig['signature']['publicKey'] = file_get_contents($config['signature']['publicKey']);
-            $defaultConfig['signature']['privateKey'] = file_get_contents($config['signature']['privateKey']);
-            $defaultConfig['encryption'] = $config['encryption'];
-
-            return new MessageBroker($defaultConfig);
-        });
     }
 
     protected function registerPublishing(): void
