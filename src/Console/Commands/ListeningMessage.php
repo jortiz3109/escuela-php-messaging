@@ -3,8 +3,8 @@
 namespace E4\Messaging\Console\Commands;
 
 use E4\Messaging\AMQPMessageStructure;
-use E4\Messaging\Utils\MsgSecurity;
 use E4\Messaging\Facades\Messaging;
+use E4\Messaging\Utils\MsgSecurity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -23,31 +23,32 @@ class ListeningMessage extends Command
             config('messagingapp.encryption.method'),
             config('messagingapp.encryption.algorithm'),
             config('messagingapp.signature.algorithm'),
-            file_get_contents(config('messagingapp.signature.publicKey')),
-            file_get_contents(config('messagingapp.signature.privateKey')),
+            config('messagingapp.signature.publicKey'),
+            config('messagingapp.signature.privateKey'),
         );
     }
 
     public function handle()
     {
-
-        $this->line('Start to receive messages'); $this->newLine();
+        $this->line('Start to receive messages');
+        $this->newLine();
 
         $queue = $this->argument('queue');
         try {
-            if($queue != null){
-                $this->line('Set optional queue ' . $queue); $this->newLine();
-                Messaging::setQueue($queue)->consume(function (AMQPMessage $message){
+            if ($queue != null) {
+                $this->line('Set optional queue ' . $queue);
+                $this->newLine();
+                Messaging::setQueue($queue)->consume(function (AMQPMessage $message) {
                     $this->consumeProcess($message);
                 });
             } else {
-                Messaging::consume(function (AMQPMessage $message){
+                Messaging::consume(function (AMQPMessage $message) {
                     $this->consumeProcess($message);
                 });
             }
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             Log::error('Exception command messaging:listen ' . $exception);
-            $this->error('Exception: ' .  $exception);
+            $this->error('Exception: ' . $exception);
             $this->error('Something went wrong');
         }
 
@@ -65,7 +66,7 @@ class ListeningMessage extends Command
 //        $this->newLine();
 
         $this->line('Dispatch event:');
-        $events =  config('messagingapp.events');
+        $events = config('messagingapp.events');
         $this->line('Event: ' . $message->getRoutingKey());
         $this->newLine();
 
@@ -73,7 +74,7 @@ class ListeningMessage extends Command
             $this->line('Prepare MsgStructure:');
             $data = $this->messageSecurity->prepareMsgToReceive($message->body);
             $msg = new AMQPMessageStructure($message, $data);
-        } catch(\Exception $exception){
+        } catch (\Exception $exception) {
             Log::error('Exception command messaging:listen ' . $exception);
             $this->error('Exception: ' . $exception);
         }
