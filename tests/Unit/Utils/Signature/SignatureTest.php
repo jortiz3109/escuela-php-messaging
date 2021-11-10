@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Utils\Signature;
 
-use E4\Messaging\Exceptions\SignatureVerifyException;
 use E4\Messaging\Exceptions\SignatureSignException;
+use E4\Messaging\Exceptions\SignatureVerifyException;
 use E4\Messaging\Utils\Signature\Signature;
 use Tests\TestCase;
 
