@@ -18,8 +18,8 @@ class MsgSecurityTest extends TestCase
     private array $msgBody = [
         'user' => [
             'uuid' => 123,
-            'name' => "Esperanza Gomez"
-        ]
+            'name' => 'Esperanza Gomez',
+        ],
     ];
     private ?MsgSecurity $msgSecurity = null;
 
@@ -32,7 +32,6 @@ class MsgSecurityTest extends TestCase
         $this->assertArrayHasKey('signature', $msgOut);
         return $msgEncode;
     }
-
 
     public function test_it_prepare_a_message_to_receive_correctly(): void
     {

@@ -2,7 +2,6 @@
 
 namespace E4\Messaging;
 
-use E4\Messaging\Utils\MessageStructure;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 

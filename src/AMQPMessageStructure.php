@@ -15,7 +15,7 @@ class AMQPMessageStructure extends MessageStructure
         $this->AMQPMessage = $AMQPMessage;
     }
 
-    function attributes(): array
+    public function attributes(): array
     {
         return $this->AMQPMessage->get_properties();
     }

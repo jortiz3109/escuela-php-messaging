@@ -7,7 +7,6 @@ use E4\Messaging\Exceptions\MessageBrokerConfigException;
 use E4\Messaging\Utils\Helpers;
 use E4\Messaging\Utils\MessageStructure;
 use E4\Messaging\Utils\MsgSecurity;
-use PhpAmqpLib\Message\AMQPMessage;
 
 class MessageBroker
 {
@@ -54,7 +53,7 @@ class MessageBroker
     {
         $missingKeys = Helpers::getMissingKeys($newConfig, $this->config);
         if ($missingKeys != []) {
-            throw new MessageBrokerConfigException("Key invalid: " . json_encode($missingKeys));
+            throw new MessageBrokerConfigException('Key invalid: ' . json_encode($missingKeys));
         }
     }
 
@@ -83,7 +82,7 @@ class MessageBroker
         $this->consumer->consume($closure);
     }
 
-    public function setQueue(string $queue): MessageBroker
+    public function setQueue(string $queue): self
     {
         $this->consumer->setQueue($queue);
         return $this;

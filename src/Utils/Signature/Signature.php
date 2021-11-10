@@ -12,7 +12,7 @@ class Signature
     private string $publicKey;
     private int $algorithm;
 
-    public function  __construct(int $algorithm, string $publicKey, string|null $privateKey = null)
+    public function __construct(int $algorithm, string $publicKey, string|null $privateKey = null)
     {
         $this->algorithm = $algorithm;
         $this->publicKey = $publicKey;
