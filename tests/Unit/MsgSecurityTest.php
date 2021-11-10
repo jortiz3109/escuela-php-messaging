@@ -45,7 +45,7 @@ class MsgSecurityTest extends TestCase
     {
         $this->expectException(SignatureVerifyException::class);
         $messageEncode = json_decode($this->createEncodeMessage('message::bad_sig', $this->msgBody));
-        $messageEncode->signature = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QI=';
+        $messageEncode->signature = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QIsasda=';
         $this->createMsgSecurity()->prepareMsgToReceive(json_encode($messageEncode));
     }
 
