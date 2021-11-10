@@ -42,7 +42,7 @@ class Signature
      * @param string $signatureInBase64
      *
      * @return bool
-     * @throws SignatureException
+     * @throws SignatureVerifyException
      * @throws Exception if the public key is wrong
      */
     public function verify(string $message, string $signatureInBase64): bool
