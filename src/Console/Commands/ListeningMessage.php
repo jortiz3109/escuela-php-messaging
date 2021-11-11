@@ -8,6 +8,7 @@ use E4\Messaging\Utils\MsgSecurity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Message\AMQPMessage;
+use E4\Messaging\Events\DefaultMessageEvent;
 
 class ListeningMessage extends Command
 {
@@ -82,6 +83,7 @@ class ListeningMessage extends Command
         if (array_key_exists($message->getRoutingKey(), $events)) {
             event(new $events[$message->getRoutingKey()]($msg));
         } else {
+            event(new DefaultMessageEvent('There are not event' . $message->getRoutingKey()($msg)));
             $this->error("There aren't event");
         }
         $this->newLine();
