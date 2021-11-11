@@ -18,19 +18,17 @@ class MsgSecurityTest extends TestCase
     private array $msgBody = [
         'user' => [
             'uuid' => 123,
-            'name' => 'Esperanza Gomez',
+            'name' => 'Zara Isabell Valencia',
         ],
     ];
     private ?MsgSecurity $msgSecurity = null;
 
-    public function test_it_prepare_a_message_to_publish_correctly(): string
+    public function test_it_prepare_a_message_to_publish_correctly(): void
     {
-        $msgEncode = $this->createEncodeMessage('user::created');
-
+        $msgEncode = $this->createEncodeMessage('user::created', $this->msgBody);
         $msgOut = json_decode($msgEncode, true);
         $this->assertIsNotArray($msgOut['body']);
         $this->assertArrayHasKey('signature', $msgOut);
-        return $msgEncode;
     }
 
     public function test_it_prepare_a_message_to_receive_correctly(): void
@@ -51,13 +49,7 @@ class MsgSecurityTest extends TestCase
 
     private function createEncodeMessage(string $event, ?array $body = null): string
     {
-        return $this->createMsgSecurity()->prepareMsgToPublish($this->createMsgStructure($event, $body));
-    }
-
-    private function createMsgStructure(string $event, ?array $body = null): MessageStructure
-    {
-        $body = $body ?: $this->msgBody;
-        return new MessageStructure($event, $body, 1);
+        return $this->createMsgSecurity()->prepareMsgToPublish(new MessageStructure($event, $body, 1));
     }
 
     private function createMsgSecurity(): MsgSecurity
