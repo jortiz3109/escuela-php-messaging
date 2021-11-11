@@ -46,25 +46,26 @@ class MsgSecurity
     public function prepareMsgToReceive(string $message): MessageStructure
     {
         $jsonMessage = json_decode($message);
-        if (isset($jsonMessage->body) && isset($jsonMessage->signature)) {
-            try {
-                if ($this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
-                    $bodyDecrypt = json_decode($this->encryption->decrypt($jsonMessage->body), true);
-                    if ($bodyDecrypt) {
-                        return new MessageStructure(
-                            $jsonMessage->event,
-                            $bodyDecrypt,
-                            $jsonMessage->id
-                        );
-                    } else {
-                        throw new \Exception('Its not possible to decrypt the message');
-                    }
-                }
-            } catch (Exception $exception) {
-                throw new SignatureVerifyException('Error in message wrong signature');
-            }
-        } else {
+
+        if (!isset($jsonMessage->body) && !isset($jsonMessage->signature)) {
             throw new \Exception('Does not have a well-defined message structure');
+        }
+
+        try {
+            if (!$this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
+                throw new \Exception('Its not possible to verify the message');
+            }
+            $bodyDecrypt = json_decode($this->encryption->decrypt($jsonMessage->body), true);
+            if (!$bodyDecrypt) {
+                throw new \Exception('Its not possible to decrypt the message');
+            }
+            return new MessageStructure(
+                $jsonMessage->event,
+                $bodyDecrypt,
+                $jsonMessage->id
+            );
+        } catch (Exception $exception) {
+            throw new SignatureVerifyException('Error in message wrong signature');
         }
     }
 }

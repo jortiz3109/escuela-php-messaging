@@ -58,12 +58,12 @@ class ListeningMessage extends Command
 
     private function consumeProcess(AMQPMessage $message)
     {
-//        $this->line('Data message');
-//        $this->line('Message encrypted:');
-//        $this->line($message->body);
-//        $this->line('Message decrypted:');
-//        $this->line(json_encode($this->messageSecurity->prepareMsgToReceive($message->body)));
-//        $this->newLine();
+        $this->line('Data message');
+        $this->line('Message encrypted:');
+        $this->line($message->body);
+        $this->line('Message decrypted:');
+        $this->line(json_encode($this->messageSecurity->prepareMsgToReceive($message->body)));
+        $this->newLine();
 
         $this->line('Dispatch event:');
         $events = config('messagingapp.events');
@@ -75,14 +75,13 @@ class ListeningMessage extends Command
             $data = $this->messageSecurity->prepareMsgToReceive($message->body);
             $msg = new AMQPMessageStructure($message, $data);
         } catch (\Exception $exception) {
-            Log::error('Exception command messaging:listen ' . $exception);
+            report($exception);
             $this->error('Exception: ' . $exception);
         }
 
         if (array_key_exists($message->getRoutingKey(), $events)) {
             event(new $events[$message->getRoutingKey()]($msg));
         } else {
-//            event(new $events[]();
             $this->error("There aren't event");
         }
         $this->newLine();
