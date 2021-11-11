@@ -17,7 +17,7 @@ class MessageBrokerTest extends TestCase
             'host' => [
                 'username' => 'newUserName',
                 'password' => 'newPassword',
-            ]
+            ],
         ]);
         $this->assertInstanceOf(MessageBroker::class, $newMessageBroker);
         $this->assertEquals('newUserName', $newMessageBroker->getConfig()['host']['username']);
@@ -29,7 +29,7 @@ class MessageBrokerTest extends TestCase
         $badConfig = [
             'host' => [
                 'usernamex' => 'newUserName',
-            ]
+            ],
         ];
         $this->expectException(MessageBrokerConfigException::class);
         $this->expectExceptionMessage('Key invalid: ' . json_encode($badConfig));

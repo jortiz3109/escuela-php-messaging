@@ -18,8 +18,8 @@ class MsgSecurityTest extends TestCase
     private array $msgBody = [
         'user' => [
             'uuid' => 123,
-            'name' => "Esperanza Gomez"
-        ]
+            'name' => 'Esperanza Gomez',
+        ],
     ];
     private ?MsgSecurity $msgSecurity = null;
 
@@ -33,7 +33,6 @@ class MsgSecurityTest extends TestCase
         return $msgEncode;
     }
 
-
     public function test_it_prepare_a_message_to_receive_correctly(): void
     {
         $messageEncode = $this->createEncodeMessage('message::receive', $this->msgBody);
@@ -46,7 +45,7 @@ class MsgSecurityTest extends TestCase
     {
         $this->expectException(SignatureVerifyException::class);
         $messageEncode = json_decode($this->createEncodeMessage('message::bad_sig', $this->msgBody));
-        $messageEncode->signature = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QI=';
+        $messageEncode->signature = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QIsasda=';
         $this->createMsgSecurity()->prepareMsgToReceive(json_encode($messageEncode));
     }
 

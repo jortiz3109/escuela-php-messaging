@@ -12,7 +12,7 @@ class Signature
     private string $publicKey;
     private int $algorithm;
 
-    public function  __construct(int $algorithm, string $publicKey, string|null $privateKey = null)
+    public function __construct(int $algorithm, string $publicKey, string|null $privateKey = null)
     {
         $this->algorithm = $algorithm;
         $this->publicKey = $publicKey;
@@ -42,7 +42,7 @@ class Signature
      * @param string $signatureInBase64
      *
      * @return bool
-     * @throws SignatureException
+     * @throws SignatureVerifyException
      * @throws Exception if the public key is wrong
      */
     public function verify(string $message, string $signatureInBase64): bool

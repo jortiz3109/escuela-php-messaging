@@ -38,12 +38,7 @@ return [
                 'verify_peer' => env('MSAPP_RABBITMQ_SSL_VERIFY_PEER', true),
                 'passphrase' => env('MSAPP_RABBITMQ_SSL_PASSPHRASE', null),
             ],
-            //'backupConnection' => 'rabbitmqBackup',
         ],
-        /*'rabbitmqBackup' => [
-            'driver' => 'rabbitmq',
-            ...
-        ]*/
     ],
     'signature' => [
         'algorithm' => env('MSAPP_SIGNATURE_ALGORITHM', OPENSSL_ALGO_SHA256),
