@@ -50,12 +50,8 @@ class MsgSecurity
             throw new \Exception('Does not have a well-defined message structure');
         }
 
-        try {
-            if (!$this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
-                throw new \Exception('Its not possible to verify the message');
-            }
-        } catch (\Exception $exception) {
-            throw new \Exception($exception);
+        if (!$this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
+            throw new \Exception('Its not possible to verify the message');
         }
 
         $bodyDecrypt = json_decode($this->encryption->decrypt($jsonMessage->body), true);
