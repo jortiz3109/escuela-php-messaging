@@ -25,7 +25,7 @@ class MsgSecurityTest extends TestCase
 
     public function test_it_prepare_a_message_to_publish_correctly(): void
     {
-        $msgEncode = $this->createEncodeMessage('user::created', $this->msgBody);
+        $msgEncode = $this->createEncodeMessage($this->msgBody);
         $msgOut = json_decode($msgEncode, true);
         $this->assertIsNotArray($msgOut['body']);
         $this->assertArrayHasKey('signature', $msgOut);
@@ -33,23 +33,22 @@ class MsgSecurityTest extends TestCase
 
     public function test_it_prepare_a_message_to_receive_correctly(): void
     {
-        $messageEncode = $this->createEncodeMessage('message::receive', $this->msgBody);
+        $messageEncode = $this->createEncodeMessage($this->msgBody);
         $msgOut = $this->createMsgSecurity()->prepareMsgToReceive($messageEncode);
-        $this->assertEquals('message::receive', $msgOut->event);
         $this->assertEquals($this->msgBody, $msgOut->body);
     }
 
     public function test_throw_signature_verify(): void
     {
         $this->expectException(SignatureVerifyException::class);
-        $messageEncode = json_decode($this->createEncodeMessage('message::bad_sig', $this->msgBody));
+        $messageEncode = json_decode($this->createEncodeMessage($this->msgBody));
         $messageEncode->signature = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QIsasda=';
         $this->createMsgSecurity()->prepareMsgToReceive(json_encode($messageEncode));
     }
 
-    private function createEncodeMessage(string $event, ?array $body = null): string
+    private function createEncodeMessage(?array $body = null): string
     {
-        return $this->createMsgSecurity()->prepareMsgToPublish(new MessageStructure($event, $body, 1));
+        return $this->createMsgSecurity()->prepareMsgToPublish(new MessageStructure($body, 1));
     }
 
     private function createMsgSecurity(): MsgSecurity

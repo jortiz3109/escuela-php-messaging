@@ -11,7 +11,7 @@ class AMQPMessageStructure extends MessageStructure
 
     public function __construct(AMQPMessage $AMQPMessage, MessageStructure $messageStructure)
     {
-        parent::__construct($messageStructure->event, $messageStructure->body, $messageStructure->id);
+        parent::__construct($messageStructure->body, $messageStructure->id);
         $this->AMQPMessage = $AMQPMessage;
     }
 

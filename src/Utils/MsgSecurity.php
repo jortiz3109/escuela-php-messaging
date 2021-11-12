@@ -60,7 +60,6 @@ class MsgSecurity
                 throw new \Exception('Its not possible to decrypt the message');
             }
             return new MessageStructure(
-                $jsonMessage->event,
                 $bodyDecrypt,
                 $jsonMessage->id
             );

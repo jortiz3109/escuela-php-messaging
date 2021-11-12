@@ -42,7 +42,7 @@ return [
     ],
     'signature' => [
         'algorithm' => env('MSAPP_SIGNATURE_ALGORITHM', OPENSSL_ALGO_SHA256),
-        'publicKey' => env('MSAPP_SIGNATURE_PUBLICKEY_PATH'),
+        'publicKey' => env('MSAPP_SIGNATURE_PUBLICKEY_PATH', null),
         'privateKey' => env('MSAPP_SIGNATURE_PRIVATEKEY_PATH', null),
     ],
     'encryption' => [
@@ -50,4 +50,8 @@ return [
         'method' => env('MSAPP_ENCRYPT_METHOD', 'AES-256-CBC'),
         'algorithm' => env('MSAPP_ENCRYPT_ALGORITHM', 'sha256'),
     ],
+    'events' => [
+
+    ],
+
 ];

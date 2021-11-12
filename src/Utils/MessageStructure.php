@@ -7,13 +7,11 @@ use JsonSerializable;
 class MessageStructure implements JsonSerializable
 {
     public string $id;
-    public string $event;
     public array $body;
 
-    public function __construct(string $event, array $body, string $id = '')
+    public function __construct(array $body, string $id = '')
     {
         $this->id = $id;
-        $this->event = $event;
         $this->body = $body;
     }
 
@@ -21,7 +19,6 @@ class MessageStructure implements JsonSerializable
     {
         return [
             'id' => $this->id,
-            'event' => $this->event,
             'body' => $this->body,
         ];
     }

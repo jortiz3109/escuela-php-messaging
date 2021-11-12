@@ -16,9 +16,9 @@ class Publisher
         $this->exchange = $exchange;
     }
 
-    public function publish(string $routingKey, string $message, array $properties = []): void
+    public function publish(string $message, array $properties = []): void
     {
-        $this->amqpChannel->basic_publish($this->message($message, $properties), $this->exchange, $routingKey);
+        $this->amqpChannel->basic_publish($this->message($message, $properties), $this->exchange);
     }
 
     private function message(string $message, array $properties): AMQPMessage
