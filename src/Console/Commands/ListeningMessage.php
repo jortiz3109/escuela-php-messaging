@@ -12,21 +12,14 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class ListeningMessage extends Command
 {
-    protected $signature = 'messaging:listen {queue?}';
-    protected $description = 'Receives messages from the rabbitmq queue';
+    protected string $signature = 'messaging:listen {queue?}';
+    protected string $description = 'Receives messages from the rabbitmq queue';
     private MsgSecurity $messageSecurity;
 
     public function __construct()
     {
         parent::__construct();
-        $this->messageSecurity = new MsgSecurity(
-            config('messagingapp.encryption.secretKey'),
-            config('messagingapp.encryption.method'),
-            config('messagingapp.encryption.algorithm'),
-            config('messagingapp.signature.algorithm'),
-            config('messagingapp.signature.publicKey'),
-            config('messagingapp.signature.privateKey'),
-        );
+        $this->messageSecurity = Messaging::getMessageSecurity();
     }
 
     public function handle()
@@ -53,19 +46,11 @@ class ListeningMessage extends Command
             $this->error('Something went wrong');
         }
 
-        $this->info('The command was successful');
-        return Command::SUCCESS;
+        $this->info('The command finish');
     }
 
     private function consumeProcess(AMQPMessage $message)
     {
-        $this->line('Data message');
-        $this->line('Message encrypted:');
-        $this->line($message->body);
-        $this->line('Message decrypted:');
-        $this->line(json_encode($this->messageSecurity->prepareMsgToReceive($message->body)));
-        $this->newLine();
-
         $this->line('Dispatch event:');
         $events = config('messagingapp.events');
         $this->line('Event: ' . $message->getRoutingKey());
@@ -75,17 +60,17 @@ class ListeningMessage extends Command
             $this->line('Prepare MsgStructure:');
             $data = $this->messageSecurity->prepareMsgToReceive($message->body);
             $msg = new AMQPMessageStructure($message, $data);
+            if (array_key_exists($message->getRoutingKey(), $events)) {
+                event(new $events[$message->getRoutingKey()]($msg));
+            } else {
+                event(new DefaultMessageEvent($msg));
+                $this->error("There aren't event");
+            }
         } catch (\Exception $exception) {
             report($exception);
             $this->error('Exception: ' . $exception);
         }
 
-        if (array_key_exists($message->getRoutingKey(), $events)) {
-            event(new $events[$message->getRoutingKey()]($msg));
-        } else {
-            event(new DefaultMessageEvent($msg));
-            $this->error("There aren't event");
-        }
         $this->newLine();
     }
 }

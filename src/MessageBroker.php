@@ -85,4 +85,9 @@ class MessageBroker
         $this->consumer->setQueue($queue);
         return $this;
     }
+
+    public function getMessageSecurity(): MsgSecurity
+    {
+        return $this->messageSecurity;
+    }
 }
