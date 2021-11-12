@@ -7,11 +7,6 @@ use Illuminate\Support\ServiceProvider;
 
 class MessagingServiceProvider extends ServiceProvider
 {
-    protected $listen = [
-        E4\Messaging\Events\DefaultMessageEvent::class => [
-            E4\Messaging\Listeners\PrintUserData::class,
-        ]
-    ];
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
@@ -24,8 +19,8 @@ class MessagingServiceProvider extends ServiceProvider
         $this->registerResources();
         $this->commands([
             ListeningMessage::class,
-
         ]);
+        $this->app->register(MessagingEventServiceProvider::class);
     }
 
     protected function registerPublishing(): void

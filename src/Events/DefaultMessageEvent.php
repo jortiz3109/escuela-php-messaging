@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Events;
+namespace E4\Messaging\Events;
 
 use E4\Messaging\AMQPMessageStructure;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class DefaultMessageEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
+    
     private AMQPMessageStructure $message;
 
     public function __construct(AMQPMessageStructure $message)
@@ -20,9 +19,9 @@ class DefaultMessageEvent
         $this->message = $message;
     }
 
-    public function data()
+    public function message(): AMQPMessageStructure
     {
-        return $this->data;
+        return $this->message;
     }
 
     public function broadcastOn()

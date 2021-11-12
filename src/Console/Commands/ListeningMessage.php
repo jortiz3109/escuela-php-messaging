@@ -83,7 +83,7 @@ class ListeningMessage extends Command
         if (array_key_exists($message->getRoutingKey(), $events)) {
             event(new $events[$message->getRoutingKey()]($msg));
         } else {
-            event(new DefaultMessageEvent('There are not event' . $message->getRoutingKey()($msg)));
+            event(new DefaultMessageEvent($msg));
             $this->error("There aren't event");
         }
         $this->newLine();
