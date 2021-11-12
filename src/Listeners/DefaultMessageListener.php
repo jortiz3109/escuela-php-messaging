@@ -13,7 +13,7 @@ class DefaultMessageListener
 
     public function handle(DefaultMessageEvent $event)
     {
-        print_r($event->message());
+//        print_r($event->message()); //  Exception: Memory exhaust
         $event->message()->ack();
     }
 }

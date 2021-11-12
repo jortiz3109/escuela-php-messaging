@@ -5,7 +5,6 @@ namespace E4\Messaging\Utils;
 use E4\Messaging\Exceptions\SignatureVerifyException;
 use E4\Messaging\Utils\Encryption\Encryption;
 use E4\Messaging\Utils\Signature\Signature;
-use PHPUnit\Exception;
 
 class MsgSecurity
 {
@@ -13,13 +12,14 @@ class MsgSecurity
     private Encryption $encryption;
 
     public function __construct(
-        string $encryptSecretKey,
-        string $encryptMethod,
-        string $encryptAlgorithm,
-        int $signatureAlgorithm,
-        string $signaturePublicKey,
+        string  $encryptSecretKey,
+        string  $encryptMethod,
+        string  $encryptAlgorithm,
+        int     $signatureAlgorithm,
+        string  $signaturePublicKey,
         ?string $signaturePrivateKey = null
-    ) {
+    )
+    {
         $this->encryption = new Encryption($encryptSecretKey, $encryptMethod, $encryptAlgorithm);
         $this->signature = new Signature($signatureAlgorithm, $signaturePublicKey, $signaturePrivateKey);
     }
@@ -55,16 +55,17 @@ class MsgSecurity
             if (!$this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
                 throw new \Exception('Its not possible to verify the message');
             }
-            $bodyDecrypt = json_decode($this->encryption->decrypt($jsonMessage->body), true);
-            if (!$bodyDecrypt) {
-                throw new \Exception('Its not possible to decrypt the message');
-            }
-            return new MessageStructure(
-                $bodyDecrypt,
-                $jsonMessage->id
-            );
-        } catch (Exception $exception) {
-            throw new SignatureVerifyException('Error in message wrong signature');
+        } catch (\Exception $exception) {
+            throw new \Exception($exception);
         }
+
+        $bodyDecrypt = json_decode($this->encryption->decrypt($jsonMessage->body), true);
+        if (!$bodyDecrypt) {
+            throw new \Exception('Its not possible to decrypt the message');
+        }
+        return new MessageStructure(
+            $bodyDecrypt,
+            $jsonMessage->id
+        );
     }
 }

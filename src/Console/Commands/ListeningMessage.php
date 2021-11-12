@@ -6,8 +6,8 @@ use E4\Messaging\AMQPMessageStructure;
 use E4\Messaging\Events\DefaultMessageEvent;
 use E4\Messaging\Facades\Messaging;
 use E4\Messaging\Utils\MsgSecurity;
+use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ListeningMessage extends Command
@@ -40,8 +40,8 @@ class ListeningMessage extends Command
                     $this->consumeProcess($message);
                 });
             }
-        } catch (\Exception $exception) {
-            Log::error('Exception command messaging:listen ' . $exception);
+        } catch (Exception $exception) {
+            report($exception);
             $this->error('Exception: ' . $exception);
             $this->error('Something went wrong');
         }
@@ -66,7 +66,7 @@ class ListeningMessage extends Command
                 event(new DefaultMessageEvent($msg));
                 $this->error("There aren't event");
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             report($exception);
             $this->error('Exception: ' . $exception);
         }
