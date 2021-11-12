@@ -10,8 +10,10 @@ use Illuminate\Queue\SerializesModels;
 
 class DefaultMessageEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-    
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
+
     private AMQPMessageStructure $message;
 
     public function __construct(AMQPMessageStructure $message)

@@ -3,12 +3,12 @@
 namespace E4\Messaging\Console\Commands;
 
 use E4\Messaging\AMQPMessageStructure;
+use E4\Messaging\Events\DefaultMessageEvent;
 use E4\Messaging\Facades\Messaging;
 use E4\Messaging\Utils\MsgSecurity;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Message\AMQPMessage;
-use E4\Messaging\Events\DefaultMessageEvent;
 
 class ListeningMessage extends Command
 {

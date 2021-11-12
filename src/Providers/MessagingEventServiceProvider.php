@@ -11,8 +11,8 @@ class MessagingEventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         DefaultMessageEvent::class => [
-            DefaultMessageListener::class
-        ]
+            DefaultMessageListener::class,
+        ],
     ];
 
     public function boot()
