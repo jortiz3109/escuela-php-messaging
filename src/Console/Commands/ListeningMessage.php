@@ -12,8 +12,8 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class ListeningMessage extends Command
 {
-    protected string $signature = 'messaging:listen {queue?}';
-    protected string $description = 'Receives messages from the rabbitmq queue';
+    protected $signature = 'messaging:listen {queue?}';
+    protected $description = 'Receives messages from the rabbitmq queue';
     private MsgSecurity $messageSecurity;
 
     public function __construct()
