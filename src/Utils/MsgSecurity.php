@@ -12,14 +12,13 @@ class MsgSecurity
     private Encryption $encryption;
 
     public function __construct(
-        string  $encryptSecretKey,
-        string  $encryptMethod,
-        string  $encryptAlgorithm,
-        int     $signatureAlgorithm,
-        string  $signaturePublicKey,
+        string $encryptSecretKey,
+        string $encryptMethod,
+        string $encryptAlgorithm,
+        int $signatureAlgorithm,
+        string $signaturePublicKey,
         ?string $signaturePrivateKey = null
-    )
-    {
+    ) {
         $this->encryption = new Encryption($encryptSecretKey, $encryptMethod, $encryptAlgorithm);
         $this->signature = new Signature($signatureAlgorithm, $signaturePublicKey, $signaturePrivateKey);
     }
