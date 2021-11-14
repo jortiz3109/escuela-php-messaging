@@ -69,9 +69,9 @@ class MessageBroker
         return $this->config;
     }
 
-    public function publish(string $routingKey, string $event, array $body, string $id = '', array $properties = []): void
+    public function publish(string $routingKey, array $body, string $id = '', array $properties = []): void
     {
-        $message = $this->messageSecurity->prepareMsgToPublish(new MessageStructure($event, $body, $id));
+        $message = $this->messageSecurity->prepareMsgToPublish(new MessageStructure($body, $id));
         $this->publisher->publish($routingKey, $message, $properties);
     }
 
