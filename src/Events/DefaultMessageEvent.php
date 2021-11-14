@@ -26,7 +26,7 @@ class DefaultMessageEvent
         return $this->message;
     }
 
-    public function broadcastOn()
+    public function broadcastOn(): PrivateChannel
     {
         return new PrivateChannel('channel-name');
     }

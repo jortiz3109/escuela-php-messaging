@@ -25,7 +25,7 @@ class AMQPMessageStructure extends MessageStructure
         $this->AMQPMessage->ack();
     }
 
-    public function getRoutingKey(): string
+    public function getRoutingKey(): ?string
     {
         return $this->AMQPMessage->getRoutingKey();
     }

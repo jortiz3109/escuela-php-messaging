@@ -19,7 +19,7 @@ class Consumer
         $this->queue = $queue;
     }
 
-    public function setQueue(string $queue)
+    public function setQueue(string $queue): void
     {
         $this->queue = $queue;
     }
@@ -45,7 +45,7 @@ class Consumer
             );
 
         try {
-            while ($this->amqpChannel->callbacks && false === $this->finish) {
+            while ($this->amqpChannel->is_consuming() && false === $this->finish) {
                 $this->amqpChannel->wait(null, false, 3);
             }
             $this->amqpChannel->close();
@@ -54,7 +54,7 @@ class Consumer
         }
     }
 
-    public function stop()
+    public function stop(): void
     {
         $this->finish = true;
     }

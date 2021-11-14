@@ -22,7 +22,7 @@ class ListeningMessage extends Command
         $this->messageSecurity = Messaging::getMessageSecurity();
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->line('Start to receive messages');
         $this->newLine();
@@ -49,7 +49,7 @@ class ListeningMessage extends Command
         $this->info('The command finish');
     }
 
-    private function consumeProcess(AMQPMessage $message)
+    private function consumeProcess(AMQPMessage $message): void
     {
         $this->line('Dispatch event:');
         $events = config('messagingapp.events');

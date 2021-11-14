@@ -4,7 +4,7 @@ namespace E4\Messaging\Utils;
 
 class Helpers
 {
-    public static function getMissingKeys(array $original, array $compare)
+    public static function getMissingKeys(array $original, array $compare): array
     {
         $output = [];
         foreach ($original as $key => $value) {

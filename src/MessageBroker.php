@@ -64,7 +64,7 @@ class MessageBroker
         return new $class($newConfig);
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
