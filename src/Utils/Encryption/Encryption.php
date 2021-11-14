@@ -21,7 +21,7 @@ class Encryption
         $this->configureKeys();
     }
 
-    public function configureKeys(): void
+    private function configureKeys(): void
     {
         $this->key = hash($this->algorithm, $this->secretKey);
         $this->lengthIv = openssl_cipher_iv_length($this->encryptMethod);

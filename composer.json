@@ -40,7 +40,7 @@
           }
     },
     "scripts": {
-        "psalm": "vendor/bin/psalm",
+        "psalm": "vendor/bin/psalm --no-cache",
         "test": "vendor/bin/phpunit",
         "testdox": "XDEBUG_MODE=coverage vendor/bin/phpunit --testdox --coverage-clover coverage.xml",
         "php-cs-fixer": "vendor/bin/php-cs-fixer fix --using-cache=no",

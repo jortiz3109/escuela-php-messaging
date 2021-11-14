@@ -30,7 +30,7 @@ abstract class AMQPConnectionType
 
     protected function getSSLConnection(): AMQPSSLConnection
     {
-        $sslOptions = array_filter(Arr::get($this->config, 'ssl_options', []), function ($item) {
+        $sslOptions = array_filter(Arr::get($this->config, 'ssl_options', []), function (mixed $item): mixed {
             return null !== $item;
         });
 
