@@ -1,9 +1,9 @@
 <?php
 
-namespace E4\Messaging\Utils\Signature;
+namespace E4\Pigeon\Utils\Signature;
 
-use E4\Messaging\Exceptions\SignatureSignException;
-use E4\Messaging\Exceptions\SignatureVerifyException;
+use E4\Pigeon\Exceptions\SignatureSignException;
+use E4\Pigeon\Exceptions\SignatureVerifyException;
 use Exception;
 
 class Signature

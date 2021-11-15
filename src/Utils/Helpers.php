@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging\Utils;
+namespace E4\Pigeon\Utils;
 
 class Helpers
 {

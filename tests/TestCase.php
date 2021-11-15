@@ -2,14 +2,14 @@
 
 namespace Tests;
 
-use E4\Messaging\Providers\MessagingServiceProvider;
+use E4\Pigeon\Providers\PigeonServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     protected function getPackageProviders($app)
     {
         return [
-            MessagingServiceProvider::class,
+            PigeonServiceProvider::class,
         ];
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace E4\Messaging;
+namespace E4\Pigeon;
 
-use E4\Messaging\Utils\MessageStructure;
+use E4\Pigeon\Utils\MessageStructure;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class AMQPMessageStructure extends MessageStructure

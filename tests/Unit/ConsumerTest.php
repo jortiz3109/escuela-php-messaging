@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use E4\Messaging\Consumer;
+use E4\Pigeon\Consumer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Tests\TestCase;
 

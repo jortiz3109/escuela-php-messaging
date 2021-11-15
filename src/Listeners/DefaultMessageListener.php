@@ -1,8 +1,8 @@
 <?php
 
-namespace E4\Messaging\Listeners;
+namespace E4\Pigeon\Listeners;
 
-use E4\Messaging\Events\DefaultMessageEvent;
+use E4\Pigeon\Events\DefaultMessageEvent;
 
 class DefaultMessageListener
 {

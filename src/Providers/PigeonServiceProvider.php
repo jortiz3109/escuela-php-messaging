@@ -1,11 +1,11 @@
 <?php
 
-namespace E4\Messaging\Providers;
+namespace E4\Pigeon\Providers;
 
-use E4\Messaging\Console\Commands\ListeningMessage;
+use E4\Pigeon\Console\Commands\ListeningMessage;
 use Illuminate\Support\ServiceProvider;
 
-class MessagingServiceProvider extends ServiceProvider
+class PigeonServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
@@ -20,18 +20,18 @@ class MessagingServiceProvider extends ServiceProvider
         $this->commands([
             ListeningMessage::class,
         ]);
-        $this->app->register(MessagingEventServiceProvider::class);
+        $this->app->register(PigeonEventServiceProvider::class);
     }
 
     protected function registerPublishing(): void
     {
         $this->publishes([
-            __DIR__ . '/../../config/messagingapp.php' => config_path('messagingapp.php'),
-        ], 'messagingapp');
+            __DIR__ . '/../../config/pigeon.php' => config_path('pigeon.php'),
+        ], 'pigeon');
     }
 
     protected function registerResources(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/messagingapp.php', 'messagingapp');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/pigeon.php', 'pigeon');
     }
 }

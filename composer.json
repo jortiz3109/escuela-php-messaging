@@ -1,5 +1,5 @@
 {
-    "name": "e4/messaging",
+    "name": "e4/pigeon",
     "description": "Publish and consume messages with RabbitMQ",
     "type": "library",
     "require": {
@@ -23,7 +23,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "E4\\Messaging\\": "src/"
+            "E4\\Pigeon\\": "src/"
         }
     },
     "autoload-dev": {
@@ -35,7 +35,7 @@
     "extra": {
         "laravel": {
             "providers": [
-              "E4\\Messaging\\Providers\\MessagingServiceProvider"
+              "E4\\Pigeon\\Providers\\PigeonServiceProvider"
             ]
           }
     },

@@ -1,10 +1,10 @@
 <?php
 
-namespace E4\Messaging\Utils;
+namespace E4\Pigeon\Utils;
 
-use E4\Messaging\Exceptions\SignatureVerifyException;
-use E4\Messaging\Utils\Encryption\Encryption;
-use E4\Messaging\Utils\Signature\Signature;
+use E4\Pigeon\Exceptions\SignatureVerifyException;
+use E4\Pigeon\Utils\Encryption\Encryption;
+use E4\Pigeon\Utils\Signature\Signature;
 
 class MsgSecurity
 {

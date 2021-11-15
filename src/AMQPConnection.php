@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging;
+namespace E4\Pigeon;
 
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Channel\AMQPChannel;

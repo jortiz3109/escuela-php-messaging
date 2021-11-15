@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use E4\Messaging\AMQPConnection;
-use E4\Messaging\Exceptions\MessageBrokerConfigException;
-use E4\Messaging\MessageBroker;
+use E4\Pigeon\AMQPConnection;
+use E4\Pigeon\Exceptions\MessageBrokerConfigException;
+use E4\Pigeon\MessageBroker;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Tests\TestCase;
 
@@ -40,7 +40,7 @@ class MessageBrokerTest extends TestCase
 
     private function getConfig(string $connection = 'rabbitmq'): array
     {
-        $config = config('messagingapp');
+        $config = config('pigeon');
         $config['signature']['publicKey'] = file_get_contents(__DIR__ . '/../certs/signaturePublicKey.pem');
         $config['signature']['privateKey'] = file_get_contents(__DIR__ . '/../certs/signaturePrivateKey.pem');
         $configMB = $config['connections'][$connection];

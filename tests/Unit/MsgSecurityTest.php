@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use E4\Messaging\Exceptions\SignatureVerifyException;
-use E4\Messaging\Utils\MessageStructure;
-use E4\Messaging\Utils\MsgSecurity;
+use E4\Pigeon\Exceptions\SignatureVerifyException;
+use E4\Pigeon\Utils\MessageStructure;
+use E4\Pigeon\Utils\MsgSecurity;
 use Tests\TestCase;
 
 class MsgSecurityTest extends TestCase

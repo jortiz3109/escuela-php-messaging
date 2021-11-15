@@ -1,13 +1,13 @@
 <?php
 
-namespace E4\Messaging\Providers;
+namespace E4\Pigeon\Providers;
 
-use E4\Messaging\Events\DefaultMessageEvent;
-use E4\Messaging\Listeners\DefaultMessageListener;
+use E4\Pigeon\Events\DefaultMessageEvent;
+use E4\Pigeon\Listeners\DefaultMessageListener;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
-class MessagingEventServiceProvider extends ServiceProvider
+class PigeonEventServiceProvider extends ServiceProvider
 {
     protected $listen = [
         DefaultMessageEvent::class => [

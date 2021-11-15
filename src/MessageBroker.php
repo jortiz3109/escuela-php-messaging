@@ -1,12 +1,12 @@
 <?php
 
-namespace E4\Messaging;
+namespace E4\Pigeon;
 
 use Closure;
-use E4\Messaging\Exceptions\MessageBrokerConfigException;
-use E4\Messaging\Utils\Helpers;
-use E4\Messaging\Utils\MessageStructure;
-use E4\Messaging\Utils\MsgSecurity;
+use E4\Pigeon\Exceptions\MessageBrokerConfigException;
+use E4\Pigeon\Utils\Helpers;
+use E4\Pigeon\Utils\MessageStructure;
+use E4\Pigeon\Utils\MsgSecurity;
 
 class MessageBroker
 {
@@ -34,7 +34,7 @@ class MessageBroker
 
     private function configInit(): array
     {
-        $settings = config('messagingapp');
+        $settings = config('pigeon');
         $defaultConfig = $settings['connections'][$settings['default']];
         $defaultConfig['signature'] = $settings['signature'];
         $defaultConfig['encryption'] = $settings['encryption'];

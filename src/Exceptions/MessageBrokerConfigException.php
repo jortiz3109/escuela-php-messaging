@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging\Exceptions;
+namespace E4\Pigeon\Exceptions;
 
 use Exception;
 

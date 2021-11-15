@@ -2,7 +2,7 @@
 
 namespace Test\Unit\Utils\Encryption;
 
-use E4\Messaging\Utils\Encryption\Encryption;
+use E4\Pigeon\Utils\Encryption\Encryption;
 use Tests\TestCase;
 
 class EncryptionTest extends TestCase

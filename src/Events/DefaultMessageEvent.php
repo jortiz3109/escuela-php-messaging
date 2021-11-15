@@ -1,8 +1,8 @@
 <?php
 
-namespace E4\Messaging\Events;
+namespace E4\Pigeon\Events;
 
-use E4\Messaging\AMQPMessageStructure;
+use E4\Pigeon\AMQPMessageStructure;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;

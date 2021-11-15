@@ -1,8 +1,8 @@
 <?php
 
-namespace E4\Messaging\Facades;
+namespace E4\Pigeon\Facades;
 
-use E4\Messaging\MessageBroker;
+use E4\Pigeon\MessageBroker;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @see MessageBroker
  */
-class Messaging extends Facade
+class Pigeon extends Facade
 {
     protected static function getFacadeAccessor(): string
     {

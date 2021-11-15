@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging\Utils\Encryption;
+namespace E4\Pigeon\Utils\Encryption;
 
 class Encryption
 {

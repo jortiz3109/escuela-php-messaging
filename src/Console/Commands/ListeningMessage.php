@@ -1,25 +1,25 @@
 <?php
 
-namespace E4\Messaging\Console\Commands;
+namespace E4\Pigeon\Console\Commands;
 
-use E4\Messaging\AMQPMessageStructure;
-use E4\Messaging\Events\DefaultMessageEvent;
-use E4\Messaging\Facades\Messaging;
-use E4\Messaging\Utils\MsgSecurity;
+use E4\Pigeon\AMQPMessageStructure;
+use E4\Pigeon\Events\DefaultMessageEvent;
+use E4\Pigeon\Facades\Pigeon;
+use E4\Pigeon\Utils\MsgSecurity;
 use Exception;
 use Illuminate\Console\Command;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ListeningMessage extends Command
 {
-    protected $signature = 'messaging:listen {queue?}';
+    protected $signature = 'pigeon:listen {queue?}';
     protected $description = 'Receives messages from the rabbitmq queue';
     private MsgSecurity $messageSecurity;
 
     public function __construct()
     {
         parent::__construct();
-        $this->messageSecurity = Messaging::getMessageSecurity();
+        $this->messageSecurity = Pigeon::getMessageSecurity();
     }
 
     public function handle(): void
@@ -32,11 +32,11 @@ class ListeningMessage extends Command
             if ($queue != null) {
                 $this->line('Set optional queue ' . $queue);
                 $this->newLine();
-                Messaging::setQueue($queue)->consume(function (AMQPMessage $message) {
+                Pigeon::setQueue($queue)->consume(function (AMQPMessage $message) {
                     $this->consumeProcess($message);
                 });
             } else {
-                Messaging::consume(function (AMQPMessage $message) {
+                Pigeon::consume(function (AMQPMessage $message) {
                     $this->consumeProcess($message);
                 });
             }
@@ -52,7 +52,7 @@ class ListeningMessage extends Command
     private function consumeProcess(AMQPMessage $message): void
     {
         $this->line('Dispatch event:');
-        $events = config('messagingapp.events');
+        $events = config('piegon.events');
         $this->line('Event: ' . $message->getRoutingKey());
         $this->newLine();
 
