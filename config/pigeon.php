@@ -38,7 +38,7 @@ return [
                 'verify_peer' => env('PIGEON_RABBITMQ_SSL_VERIFY_PEER', true),
                 'passphrase' => env('PIGEON_RABBITMQ_SSL_PASSPHRASE', null),
             ],
-            'consumer_wait' => env('PIGEON_RABBITMQ_CONSUMER_WAIT', 3),
+            'consumer_wait' => env('PIGEON_RABBITMQ_CONSUMER_WAIT_SECONDS', 3),
         ],
     ],
     'signature' => [

@@ -51,18 +51,16 @@ class ListeningMessage extends Command
 
     private function consumeProcess(AMQPMessage $message): void
     {
-        $this->line('Dispatch event:');
         $events = Pigeon::getConfig()['events'];
-        $this->line('Event: ' . $message->getRoutingKey());
-        $this->newLine();
-
         try {
-            $this->line('Prepare MsgStructure:');
             $data = $this->messageSecurity->prepareMsgToReceive($message->body);
             $msg = new AMQPMessageStructure($message, $data);
+            
             if (array_key_exists($message->getRoutingKey(), $events)) {
+                $this->line('Dispatch event: ' . $message->getRoutingKey());
                 event(new $events[$message->getRoutingKey()]($msg));
             } else {
+                $this->line('Dispatch event: DefaultMessageEvent');
                 event(new DefaultMessageEvent($msg));
                 $this->error("There aren't event");
             }
