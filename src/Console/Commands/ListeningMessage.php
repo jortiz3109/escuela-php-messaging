@@ -55,7 +55,7 @@ class ListeningMessage extends Command
         try {
             $data = $this->messageSecurity->prepareMsgToReceive($message->body);
             $msg = new AMQPMessageStructure($message, $data);
-            
+
             if (array_key_exists($message->getRoutingKey(), $events)) {
                 $this->line('Dispatch event: ' . $message->getRoutingKey());
                 event(new $events[$message->getRoutingKey()]($msg));
