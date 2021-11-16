@@ -10,14 +10,14 @@ class ConsumerTest extends TestCase
 {
     public function test_it_can_construct_a_consumer(): void
     {
-        $consumer = new Consumer('queueName', $this->prepareAMQPChannel());
+        $consumer = new Consumer('queueName', 3, $this->prepareAMQPChannel());
 
         $this->assertNotNull($consumer);
     }
 
     public function test_it_can_set_queue_name(): void
     {
-        $consumer = new Consumer('queueName', $this->prepareAMQPChannel());
+        $consumer = new Consumer('queueName', 3, $this->prepareAMQPChannel());
         $consumer->setQueue('queue');
 
         $this->assertEquals('queue', $consumer->getQueue());
@@ -25,7 +25,7 @@ class ConsumerTest extends TestCase
 
     public function test_it_can_consume(): void
     {
-        $consumer = new Consumer('queueName', $this->prepareAMQPChannel());
+        $consumer = new Consumer('queueName', 3, $this->prepareAMQPChannel());
         $consumer->setQueue('queue');
         $consumer->consume(function () {
         });

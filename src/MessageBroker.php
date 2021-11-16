@@ -29,7 +29,7 @@ class MessageBroker
         );
         $this->amqpConnection = $this->createConnection();
         $this->publisher = new Publisher($this->config['exchange']['name'], $this->amqpConnection->getChannel());
-        $this->consumer = new Consumer($this->config['queue']['name'], $this->amqpConnection->getChannel());
+        $this->consumer = new Consumer($this->config['queue']['name'], $this->config['consumer_wait'], $this->amqpConnection->getChannel());
     }
 
     private function configInit(): array

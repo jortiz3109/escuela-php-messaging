@@ -12,10 +12,12 @@ class Consumer
     private bool $finish = false;
     private AMQPChannel $amqpChannel;
     private string $queue;
+    private int $waitTimeout;
 
-    public function __construct(string $queue, AMQPChannel $amqpChannel)
+    public function __construct(string $queue, int $waitTimeout, AMQPChannel $amqpChannel)
     {
         $this->amqpChannel = $amqpChannel;
+        $this->waitTimeout = $waitTimeout;
         $this->queue = $queue;
     }
 
@@ -46,7 +48,7 @@ class Consumer
 
         try {
             while ($this->amqpChannel->is_consuming() && false === $this->finish) {
-                $this->amqpChannel->wait(null, false, 3);
+                $this->amqpChannel->wait(null, false, $this->waitTimeout);
             }
             $this->amqpChannel->close();
         } catch (AMQPTimeoutException $ex) {
