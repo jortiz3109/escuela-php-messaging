@@ -52,7 +52,7 @@ class ListeningMessage extends Command
     private function consumeProcess(AMQPMessage $message): void
     {
         $this->line('Dispatch event:');
-        $events = config('piegon.events');
+        $events = Pigeon::getConfig()['events'];
         $this->line('Event: ' . $message->getRoutingKey());
         $this->newLine();
 

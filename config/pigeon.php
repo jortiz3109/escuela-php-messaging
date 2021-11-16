@@ -42,8 +42,8 @@ return [
     ],
     'signature' => [
         'algorithm' => env('PIGEON_SIGNATURE_ALGORITHM', OPENSSL_ALGO_SHA256),
-        'publicKey' => env('PIGEON_SIGNATURE_PUBLICKEY_PATH', null),
-        'privateKey' => env('PIGEON_SIGNATURE_PRIVATEKEY_PATH', null),
+        'publicKey' => env('PIGEON_SIGNATURE_PUBLICKEY', 'public_key'),
+        'privateKey' => env('PIGEON_SIGNATURE_PRIVATEKEY', null),
     ],
     'encryption' => [
         'secretKey' => env('PIGEON_ENCRYPT_SECRETKEY', 'CLASS-MESSAGE-KEY'),
@@ -53,5 +53,4 @@ return [
     'events' => [
 
     ],
-
 ];

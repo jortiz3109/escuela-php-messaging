@@ -6,7 +6,7 @@ use E4\Pigeon\MessageBroker;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static void publish(string $routingKey, string $event, array $body, string $id = null, array $properties = [])
+ * @method static void publish(string $event, array $body, string $id = null, array $properties = [])
  *
  * @see MessageBroker
  */
