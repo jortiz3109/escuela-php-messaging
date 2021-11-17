@@ -2,8 +2,9 @@
 
 namespace Tests\Unit\Utils\Signature;
 
-use E4\Messaging\Utils\Signature\Exceptions\SignatureException;
-use E4\Messaging\Utils\Signature\Signature;
+use E4\Pigeon\Exceptions\SignatureSignException;
+use E4\Pigeon\Exceptions\SignatureVerifyException;
+use E4\Pigeon\Utils\Signature\Signature;
 use Tests\TestCase;
 
 class SignatureTest extends TestCase
@@ -15,13 +16,13 @@ class SignatureTest extends TestCase
 
     public function setUp(): void
     {
-        $this->privateKey = file_get_contents(__DIR__ . '/privateKey.pem');
-        $this->publicKey = file_get_contents(__DIR__ . '/publicKey.pem');
+        $this->privateKey = file_get_contents(__DIR__ . '/../../../certs/signaturePrivateKey.pem');
+        $this->publicKey = file_get_contents(__DIR__ . '/../../../certs/signaturePublicKey.pem');
     }
 
     public function test_it_shows_error_when_creating_signature_without_private_key(): void
     {
-        $this->expectException(SignatureException::class);
+        $this->expectException(SignatureSignException::class);
         $this->expectExceptionMessage('Is necessary the private key');
         $signer = new Signature($this->algorithm, $this->publicKey);
 
@@ -30,7 +31,7 @@ class SignatureTest extends TestCase
 
     public function test_it_shows_error_when_creating_signature_with_incorrect_algorithm(): void
     {
-        $this->expectException(SignatureException::class);
+        $this->expectException(SignatureSignException::class);
         $this->expectExceptionMessage('The correct algorithm is required');
         $signer = new Signature(OPENSSL_ALGO_MD5, $this->publicKey, $this->privateKey);
 
@@ -65,7 +66,7 @@ class SignatureTest extends TestCase
 
     public function test_it_shows_error_when_validating_the_signature_with_wrong_algorithm(): void
     {
-        $this->expectException(SignatureException::class);
+        $this->expectException(SignatureVerifyException::class);
         $signer = new Signature(OPENSSL_ALGO_MD5, $this->publicKey);
         $sign = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QI=';
 

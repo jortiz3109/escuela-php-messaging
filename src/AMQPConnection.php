@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging;
+namespace E4\Pigeon;
 
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -12,9 +12,9 @@ class AMQPConnection extends AMQPConnectionType
     private AMQPStreamConnection $connection;
     private AMQPChannel $channel;
 
-    public function __construct()
+    public function __construct(array $config)
     {
-        parent::__construct(config('amqp'));
+        parent::__construct($config);
         $this->setConnection();
     }
 

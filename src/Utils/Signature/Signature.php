@@ -1,8 +1,9 @@
 <?php
 
-namespace E4\Messaging\Utils\Signature;
+namespace E4\Pigeon\Utils\Signature;
 
-use E4\Messaging\Utils\Signature\Exceptions\SignatureException;
+use E4\Pigeon\Exceptions\SignatureSignException;
+use E4\Pigeon\Exceptions\SignatureVerifyException;
 use Exception;
 
 class Signature
@@ -22,16 +23,16 @@ class Signature
      * @param string $message
      *
      * @return string
-     * @throws SignatureException
+     * @throws SignatureSignException
      * @throws Exception
      */
     public function sign(string $message): string
     {
         if (!$this->privateKey) {
-            throw new SignatureException('Is necessary the private key');
+            throw new SignatureSignException('Is necessary the private key');
         }
         if (!openssl_sign($message, $signature, $this->privateKey, $this->algorithm)) {
-            throw new SignatureException('The correct algorithm is required');
+            throw new SignatureSignException('The correct algorithm is required');
         }
         return base64_encode($signature);
     }
@@ -41,14 +42,14 @@ class Signature
      * @param string $signatureInBase64
      *
      * @return bool
-     * @throws SignatureException
+     * @throws SignatureVerifyException
      * @throws Exception if the public key is wrong
      */
     public function verify(string $message, string $signatureInBase64): bool
     {
         $verified = openssl_verify($message, base64_decode($signatureInBase64), $this->publicKey, $this->algorithm);
         if ($verified == -1) {
-            throw new SignatureException('The signature format or the signature algorithm is wrong');
+            throw new SignatureVerifyException('The signature format or the signature algorithm is wrong');
         }
         return $verified == 1;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging\Utils\Encryption;
+namespace E4\Pigeon\Utils\Encryption;
 
 class Encryption
 {
@@ -21,7 +21,7 @@ class Encryption
         $this->configureKeys();
     }
 
-    public function configureKeys(): void
+    private function configureKeys(): void
     {
         $this->key = hash($this->algorithm, $this->secretKey);
         $this->lengthIv = openssl_cipher_iv_length($this->encryptMethod);

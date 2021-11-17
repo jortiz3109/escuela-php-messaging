@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging;
+namespace E4\Pigeon;
 
 use Closure;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -12,14 +12,16 @@ class Consumer
     private bool $finish = false;
     private AMQPChannel $amqpChannel;
     private string $queue;
+    private int $waitTimeout;
 
-    public function __construct(AMQPChannel $amqpChannel)
+    public function __construct(string $queue, int $waitTimeout, AMQPChannel $amqpChannel)
     {
         $this->amqpChannel = $amqpChannel;
-        $this->queue = config('amqp.queue.name');
+        $this->waitTimeout = $waitTimeout;
+        $this->queue = $queue;
     }
 
-    public function setQueue(string $queue)
+    public function setQueue(string $queue): void
     {
         $this->queue = $queue;
     }
@@ -29,7 +31,7 @@ class Consumer
         return $this->queue;
     }
 
-    public function consume(string $queue, Closure $closure): void
+    public function consume(Closure $closure): void
     {
         $this->amqpChannel
             ->basic_consume(
@@ -45,8 +47,8 @@ class Consumer
             );
 
         try {
-            while ($this->amqpChannel->callbacks && false === $this->finish) {
-                $this->amqpChannel->wait(null, false, 3);
+            while ($this->amqpChannel->is_consuming() && false === $this->finish) {
+                $this->amqpChannel->wait(null, false, $this->waitTimeout);
             }
             $this->amqpChannel->close();
         } catch (AMQPTimeoutException $ex) {
@@ -54,7 +56,7 @@ class Consumer
         }
     }
 
-    public function stop()
+    public function stop(): void
     {
         $this->finish = true;
     }

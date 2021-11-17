@@ -5,3 +5,5 @@ composer.lock
 coverage.xml
 /build
 /coverage
+/ci
+.idea/*

@@ -1,6 +1,6 @@
 <?php
 
-namespace E4\Messaging;
+namespace E4\Pigeon;
 
 use Illuminate\Support\Arr;
 use PhpAmqpLib\Connection\AMQPSSLConnection;
@@ -30,7 +30,7 @@ abstract class AMQPConnectionType
 
     protected function getSSLConnection(): AMQPSSLConnection
     {
-        $sslOptions = array_filter(Arr::get($this->config, 'ssl_options', []), function ($item) {
+        $sslOptions = array_filter(Arr::get($this->config, 'ssl_options', []), function (mixed $item): mixed {
             return null !== $item;
         });
 

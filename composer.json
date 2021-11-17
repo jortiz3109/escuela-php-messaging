@@ -1,5 +1,5 @@
 {
-    "name": "e4/php-messaging",
+    "name": "e4/pigeon",
     "description": "Publish and consume messages with RabbitMQ",
     "type": "library",
     "require": {
@@ -23,7 +23,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "E4\\Messaging\\": "src/"
+            "E4\\Pigeon\\": "src/"
         }
     },
     "autoload-dev": {
@@ -35,12 +35,12 @@
     "extra": {
         "laravel": {
             "providers": [
-              "E4\\Messaging\\Providers\\MessagingServiceProvider"
+              "E4\\Pigeon\\Providers\\PigeonServiceProvider"
             ]
           }
     },
     "scripts": {
-        "psalm": "vendor/bin/psalm",
+        "psalm": "vendor/bin/psalm --no-cache",
         "test": "vendor/bin/phpunit",
         "testdox": "XDEBUG_MODE=coverage vendor/bin/phpunit --testdox --coverage-clover coverage.xml",
         "php-cs-fixer": "vendor/bin/php-cs-fixer fix --using-cache=no",

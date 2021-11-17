@@ -1,8 +1,7 @@
 <?php
 
-namespace E4\Messaging;
+namespace E4\Pigeon;
 
-use E4\Messaging\Utils\MessageStructure;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -11,15 +10,14 @@ class Publisher
     private AMQPChannel $amqpChannel;
     private string $exchange;
 
-    public function __construct(AMQPChannel $amqpChannel)
+    public function __construct(string $exchange, AMQPChannel $amqpChannel)
     {
         $this->amqpChannel = $amqpChannel;
-        $this->exchange = config('amqp.exchange.name');
+        $this->exchange = $exchange;
     }
 
-    public function publish(string $routingKey, string $id, string $event, array $body, array $properties = []): void
+    public function publish(string $routingKey, string $message, array $properties = []): void
     {
-        $message = json_encode(new MessageStructure($id, $event, $body));
         $this->amqpChannel->basic_publish($this->message($message, $properties), $this->exchange, $routingKey);
     }
 

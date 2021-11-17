@@ -1,19 +1,17 @@
 <?php
 
-namespace E4\Messaging\Utils;
+namespace E4\Pigeon\Utils;
 
 use JsonSerializable;
 
 class MessageStructure implements JsonSerializable
 {
-    private string $id;
-    private string $event;
-    private array $body;
+    public string $id;
+    public array $body;
 
-    public function __construct(string $id, string $event, array $body)
+    public function __construct(array $body, string $id = '')
     {
         $this->id = $id;
-        $this->event = $event;
         $this->body = $body;
     }
 
@@ -21,7 +19,6 @@ class MessageStructure implements JsonSerializable
     {
         return [
             'id' => $this->id,
-            'event' => $this->event,
             'body' => $this->body,
         ];
     }
