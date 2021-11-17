@@ -54,15 +54,6 @@ class MsgSecurityTest extends TestCase
         $this->createMsgSecurity()->prepareMsgToReceive(json_encode([]));
     }
 
-    public function test_throw_value_error_in_decrypt(): void
-    {
-        $this->expectException(ValueError::class);
-        $this->expectExceptionMessage('Its not possible to decrypt the message');
-        $messageEncode = json_decode($this->createEncodeMessage($this->msgBody));
-        $messageEncode->body = 'bad format';
-        $this->createMsgSecurity()->prepareMsgToReceive(json_encode($messageEncode));
-    }
-
     private function createEncodeMessage(?array $body = null): string
     {
         return $this->createMsgSecurity()->prepareMsgToPublish(new MessageStructure($body, 1));
