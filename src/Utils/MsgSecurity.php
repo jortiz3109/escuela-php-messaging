@@ -5,6 +5,7 @@ namespace E4\Pigeon\Utils;
 use E4\Pigeon\Exceptions\SignatureVerifyException;
 use E4\Pigeon\Utils\Encryption\Encryption;
 use E4\Pigeon\Utils\Signature\Signature;
+use ValueError;
 
 class MsgSecurity
 {
@@ -34,29 +35,26 @@ class MsgSecurity
     }
 
     /**
-     * @throws SignatureVerifyException
-     */
-    /**
      * @param string $message
      * @return MessageStructure
      * @throws SignatureVerifyException
-     * @throws \Exception
+     * @throws ValueError
      */
     public function prepareMsgToReceive(string $message): MessageStructure
     {
         $jsonMessage = json_decode($message);
 
-        if (!isset($jsonMessage->body) && !isset($jsonMessage->signature)) {
-            throw new \Exception('Does not have a well-defined message structure');
+        if (!isset($jsonMessage->body) || !isset($jsonMessage->signature)) {
+            throw new ValueError('Does not have a well-defined message structure');
         }
 
         if (!$this->signature->verify($jsonMessage->body, $jsonMessage->signature)) {
-            throw new \Exception('Its not possible to verify the message');
+            throw new ValueError('Its not possible to verify the message');
         }
 
         $bodyDecrypt = json_decode($this->encryption->decrypt($jsonMessage->body), true);
         if (!$bodyDecrypt) {
-            throw new \Exception('Its not possible to decrypt the message');
+            throw new ValueError('Its not possible to decrypt the message');
         }
         return new MessageStructure(
             $bodyDecrypt,

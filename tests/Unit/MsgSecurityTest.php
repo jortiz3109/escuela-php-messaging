@@ -6,6 +6,7 @@ use E4\Pigeon\Exceptions\SignatureVerifyException;
 use E4\Pigeon\Utils\MessageStructure;
 use E4\Pigeon\Utils\MsgSecurity;
 use Tests\TestCase;
+use ValueError;
 
 class MsgSecurityTest extends TestCase
 {
@@ -43,6 +44,22 @@ class MsgSecurityTest extends TestCase
         $this->expectException(SignatureVerifyException::class);
         $messageEncode = json_decode($this->createEncodeMessage($this->msgBody));
         $messageEncode->signature = 'MEUCIQDEjlRMiAYyV0AsT0E9xtN7g2wZeWQO/mrfU5R85uEs6gIgN9/4dfpq4QG7kaOJ9s9Cpm74njKdJPB/O3MKeQgp0QIsasda=';
+        $this->createMsgSecurity()->prepareMsgToReceive(json_encode($messageEncode));
+    }
+
+    public function test_throw_value_error_isset_body_and_isset_signature(): void
+    {
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage('Does not have a well-defined message structure');
+        $this->createMsgSecurity()->prepareMsgToReceive(json_encode([]));
+    }
+
+    public function test_throw_value_error_in_decrypt(): void
+    {
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage('Its not possible to decrypt the message');
+        $messageEncode = json_decode($this->createEncodeMessage($this->msgBody));
+        $messageEncode->body = 'bad format';
         $this->createMsgSecurity()->prepareMsgToReceive(json_encode($messageEncode));
     }
 
