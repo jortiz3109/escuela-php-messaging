@@ -98,9 +98,9 @@ graph TD;
 ### Publish
 
 ```php
-use E4\Pigeon\Facades\Messaging;
+use E4\Pigeon\Facades\pigeon;
 
-Messaging::publish('commerce::created', $request->all());
+pigeon::publish('commerce::created', $request->all());
 ```
 
 ### Listening Command For Consume
@@ -108,12 +108,12 @@ Messaging::publish('commerce::created', $request->all());
 The command will facilitate the consumption of the queue as well as decrypt the information and dispatch the events.
 
 ```bash
-php artisan messaging:listen
+php artisan pigeon:listen
 ```
 Use the queue of the config file
 
 ```bash
-php artisan messaging:listen --queue=reports
+php artisan pigeon:listen --queue=reports
 ```
 For indicate the queue to consume
 
@@ -127,7 +127,7 @@ class Kernel extends ConsoleKernel
     
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('messaging:listen')->everyFiveMinutes();
+        $schedule->command('pigeon:listen')->everyFiveMinutes();
     }
 }
 ```
@@ -135,9 +135,9 @@ class Kernel extends ConsoleKernel
 ### Consume
 
 ```php
-use E4\Pigeon\Facades\Messaging;
+use E4\Pigeon\Facades\pigeon;
 
-Messaging::consume(function (AMQPMessage $message) {
+pigeon::consume(function (AMQPMessage $message) {
     print_r($message->body);
 });
 
@@ -146,7 +146,7 @@ Messaging::consume(function (AMQPMessage $message) {
 
 ## Demo
 
-https://github.com/FrederST/e4-messaging-demo
+https://github.com/FrederST/e4-pigeon-demo
 
 
 ## Authors
