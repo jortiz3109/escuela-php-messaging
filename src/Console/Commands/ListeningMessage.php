@@ -19,11 +19,11 @@ class ListeningMessage extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->messageSecurity = Pigeon::getMessageSecurity();
     }
 
     public function handle(): void
     {
+        $this->messageSecurity = Pigeon::getMessageSecurity();
         $this->line('Start to receive messages');
         $this->newLine();
 
