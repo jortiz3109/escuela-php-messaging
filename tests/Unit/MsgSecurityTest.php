@@ -49,7 +49,7 @@ class MsgSecurityTest extends TestCase
 
     public function test_throw_value_error_isset_body_and_isset_signature(): void
     {
-        $this->expectException(ValueError::class);
+        $this->expectException(SignatureVerifyException::class);
         $this->expectExceptionMessage('Does not have a well-defined message structure');
         $this->createMsgSecurity()->prepareMsgToReceive(json_encode([]));
     }

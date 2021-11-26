@@ -3,6 +3,7 @@
 namespace Test\Unit\Utils\Encryption;
 
 use E4\Pigeon\Utils\Encryption\Encryption;
+use E4\Pigeon\Exceptions\DecryptMethodException;
 use Tests\TestCase;
 
 class EncryptionTest extends TestCase
@@ -29,5 +30,12 @@ class EncryptionTest extends TestCase
         $messageDecrypted = $decryption->decrypt($messageEncrypted);
 
         $this->assertSame($this->message, $messageDecrypted);
+    }
+
+    public function test_it_shows_error_when_decrypt_message(): void
+    {
+        $this->expectException(DecryptMethodException::class);
+        $decryption = new Encryption($this->secretKey, $this->encryptMethod, $this->algorithm);
+        $messageDecrypted = $decryption->decrypt($this->message);
     }
 }

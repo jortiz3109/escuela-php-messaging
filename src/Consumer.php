@@ -53,6 +53,7 @@ class Consumer
             $this->amqpChannel->close();
         } catch (AMQPTimeoutException $ex) {
             $this->amqpChannel->close();
+            throw new AMQPTimeoutException($ex);
         }
     }
 

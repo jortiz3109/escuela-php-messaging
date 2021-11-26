@@ -4,10 +4,13 @@ namespace E4\Pigeon\Console\Commands;
 
 use E4\Pigeon\AMQPMessageStructure;
 use E4\Pigeon\Events\DefaultMessageEvent;
+use E4\Pigeon\Exceptions\DecryptMethodException;
+use E4\Pigeon\Exceptions\SignatureVerifyException;
 use E4\Pigeon\Facades\Pigeon;
 use E4\Pigeon\Utils\MsgSecurity;
 use Exception;
 use Illuminate\Console\Command;
+use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ListeningMessage extends Command
@@ -40,6 +43,10 @@ class ListeningMessage extends Command
                     $this->consumeProcess($message);
                 });
             }
+        } catch (AMQPTimeoutException $exception) {
+            report($exception);
+            $this->error('Exception: ' . $exception);
+            $this->error('Something went wrong');
         } catch (Exception $exception) {
             report($exception);
             $this->error('Exception: ' . $exception);
@@ -64,7 +71,7 @@ class ListeningMessage extends Command
                 event(new DefaultMessageEvent($msg));
                 $this->error("There aren't event");
             }
-        } catch (Exception $exception) {
+        } catch (SignatureVerifyException | DecryptMethodException $exception) {
             report($exception);
             $this->error('Exception: ' . $exception);
         }
