@@ -47,10 +47,6 @@ class ListeningMessage extends Command
             report($exception);
             $this->error('Exception: ' . $exception);
             $this->error('Something went wrong');
-        } catch (Exception $exception) {
-            report($exception);
-            $this->error('Exception: ' . $exception);
-            $this->error('Something went wrong');
         }
 
         $this->info('The command finish');
