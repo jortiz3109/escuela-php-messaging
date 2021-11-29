@@ -8,21 +8,17 @@ use E4\Pigeon\Exceptions\DecryptMethodException;
 use E4\Pigeon\Exceptions\SignatureVerifyException;
 use E4\Pigeon\Facades\Pigeon;
 use E4\Pigeon\Utils\MsgSecurity;
-use Exception;
 use Illuminate\Console\Command;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ListeningMessage extends Command
 {
-    protected $signature = 'pigeon:listen {queue?}';
+    protected $signature = 'pigeon:listen 
+    {queue?} 
+    {--continue-in-error}';
     protected $description = 'Receives messages from the rabbitmq queue';
     private MsgSecurity $messageSecurity;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function handle(): void
     {
@@ -47,6 +43,7 @@ class ListeningMessage extends Command
             report($exception);
             $this->error('Exception: ' . $exception);
             $this->error('Something went wrong');
+            $this->checkBehavior();
         }
 
         $this->info('The command finish');
@@ -70,8 +67,16 @@ class ListeningMessage extends Command
         } catch (SignatureVerifyException | DecryptMethodException $exception) {
             report($exception);
             $this->error('Exception: ' . $exception);
+            $this->checkBehavior();
         }
 
         $this->newLine();
+    }
+
+    private function checkBehavior(): void
+    {
+        if (!$this->option('continue-in-error')) {
+            exit('Continue In Error Disable Ending...');
+        }
     }
 }
